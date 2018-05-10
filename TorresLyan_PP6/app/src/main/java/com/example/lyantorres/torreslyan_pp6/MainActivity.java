@@ -43,8 +43,21 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
     // ===================================== SIGN IN FRAGMENT INTERFACE CALLBACKS =====================================
     @Override
-    public void signInWasPressed() {
+    public void signInWasPressed(String _email, String _password) {
 
+        mAuth.signInWithEmailAndPassword(_email, _password)
+        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(task.isSuccessful()){
+                    FirebaseUser user = mAuth.getCurrentUser();
+
+                } else {
+                    Toast.makeText(getBaseContext(), "Invalid credentials, please try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -66,11 +79,9 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()){
-
                             Toast.makeText(getBaseContext(), "You have created a new account", Toast.LENGTH_SHORT).show();
 
                         } else {
-
                             Toast.makeText(getBaseContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
 
                         }

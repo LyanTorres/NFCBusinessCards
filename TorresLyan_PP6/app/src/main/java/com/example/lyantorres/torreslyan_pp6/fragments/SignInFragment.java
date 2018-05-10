@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.lyantorres.torreslyan_pp6.R;
 
@@ -37,7 +38,7 @@ public class SignInFragment extends android.support.v4.app.Fragment {
     }
 
     public interface SignInInterface{
-        void signInWasPressed();
+        void signInWasPressed(String _email, String _password);
         void signUpWasPressed();
     }
 
@@ -68,11 +69,30 @@ public class SignInFragment extends android.support.v4.app.Fragment {
         }
     };
 
+    private View.OnClickListener signInWasClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            EditText emailET = getActivity().findViewById(R.id.email_ET);
+            EditText passwordET = getActivity().findViewById(R.id.password_ET);
+
+            if(emailET.getText() != null && passwordET.getText() != null){
+
+                if(mInterface != null) {
+                    mInterface.signInWasPressed(emailET.getText().toString(), passwordET.getText().toString());
+                }
+            }
+        }
+    };
+
     // ===================================== =====================================
 
     private void setUpListeners(){
         Button signUpBTN =  getActivity().findViewById(R.id.sign_up_BTN);
         signUpBTN.setOnClickListener(signUpWasClicked);
+
+        Button signInBTN = getActivity().findViewById(R.id.sign_in_BTN);
+        signInBTN.setOnClickListener(signInWasClicked);
 
     }
 }
