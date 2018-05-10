@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.R;
+
 public class SignUpFragment extends android.support.v4.app.Fragment {
 
     private static SignUpInterface mInterface;
@@ -68,6 +70,8 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
                 if (mInterface != null) {
                     mInterface.signUpWasPressed(mValidEmail, mValidPassword);
                 }
+            } else {
+                Toast.makeText(getActivity(), "Please make sure all fields are correct", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -143,10 +147,12 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
 
         if(_isValid){
             _editText.setTextColor(getResources().getColor(R.color.green, getActivity().getTheme()));
+            _editText.setHighlightColor(getResources().getColor(R.color.green, getActivity().getTheme()));
             _imageView.setVisibility(View.VISIBLE);
             _imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_green_24dp));
         } else {
             _editText.setTextColor(getResources().getColor(R.color.red, getActivity().getTheme()));
+            _editText.setHighlightColor(getResources().getColor(R.color.red, getActivity().getTheme()));
             _imageView.setVisibility(View.VISIBLE);
             _imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear_red_24dp));
         }

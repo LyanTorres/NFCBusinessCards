@@ -14,4 +14,6 @@
     <string name="your_information">Your information:</string>
     <string name="next">Next</string>
     <string name="phone_number">Phone number</string>
+    <string name="delete">Delete</string>
+    <string name="profile">profile</string>
 </resources>

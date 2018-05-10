@@ -1,5 +1,6 @@
 package com.example.lyantorres.torreslyan_pp6;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +38,14 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // TODO: do something if there is one I guess??
+        if(currentUser != null) {
+
+            // they are signed in so don't make them sign in again
+            Intent intent = new Intent(this, HomeScreenActivity.class);
+            startActivity(intent);
+
+            finish();
+        }
 
     }
 
@@ -53,8 +61,13 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
                 if(task.isSuccessful()){
                     FirebaseUser user = mAuth.getCurrentUser();
 
+                    Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
+                    startActivity(intent);
+
+                    finish();
+
                 } else {
-                    Toast.makeText(getBaseContext(), "Invalid credentials, please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Invalid email or password, please try again", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -79,7 +92,13 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()){
+                            FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getBaseContext(), "You have created a new account", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
+                            startActivity(intent);
+
+                            finish();
 
                         } else {
                             Toast.makeText(getBaseContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
