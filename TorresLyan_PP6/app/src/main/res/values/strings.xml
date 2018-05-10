@@ -16,4 +16,10 @@
     <string name="phone_number">Phone number</string>
     <string name="delete">Delete</string>
     <string name="profile">profile</string>
+    <string name="edit">Edit</string>
+    <string name="your_at_a_glance_business_card">Your at a glance business card:</string>
+    <string name="your_more_detaileed_business_card">Your more detaileed Business card:</string>
+    <string name="save">Save</string>
+    <string name="at_a_glance_card">At a glance card</string>
+    <string name="detailed_card">Detailed card</string>
 </resources>
