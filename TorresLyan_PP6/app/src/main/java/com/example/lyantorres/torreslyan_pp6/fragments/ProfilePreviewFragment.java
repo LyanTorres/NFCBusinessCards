@@ -17,6 +17,7 @@ import com.example.lyantorres.torreslyan_pp6.R;
 public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
 
 
+
     private ProfilePreviewFragmentInterface mInterface;
 
     public ProfilePreviewFragment() {
@@ -98,4 +99,6 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
 
         return true;
     }
+
+
 }
