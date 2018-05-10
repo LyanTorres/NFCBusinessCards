@@ -1,5 +1,6 @@
 package com.example.lyantorres.torreslyan_pp6;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -31,7 +32,15 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
 
     @Override
     public void saveToNFCWasClicked() {
+        
+    }
 
+    @Override
+    public void signOutWasClicked() {
+        Intent intent  = new Intent(this, MainActivity.class);
+        intent.setAction("SIGNOUT");
+        startActivity(intent);
+        finish();
     }
 
     @Override

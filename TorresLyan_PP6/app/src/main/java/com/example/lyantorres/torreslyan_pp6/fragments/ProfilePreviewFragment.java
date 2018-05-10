@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.lyantorres.torreslyan_pp6.R;
 
@@ -51,6 +52,7 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
     public interface ProfilePreviewFragmentInterface{
         void editWasClicked();
         void saveToNFCWasClicked();
+        void signOutWasClicked();
     }
 
     @Override
@@ -61,6 +63,16 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
 
         if(view != null){
 
+            Button signOutBTN = getActivity().findViewById(R.id.sign_out);
+
+            signOutBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mInterface != null){
+                        mInterface.signOutWasClicked();
+                    }
+                }
+            });
         }
     }
 

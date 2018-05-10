@@ -40,11 +40,17 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
         if(currentUser != null) {
 
-            // they are signed in so don't make them sign in again
-            Intent intent = new Intent(this, HomeScreenActivity.class);
-            startActivity(intent);
+            if(getIntent() != null) {
 
-            finish();
+                if(getIntent().getAction() != "SIGNOUT") {
+
+                    // they are signed in so don't make them sign in again
+                    Intent intent = new Intent(this, HomeScreenActivity.class);
+                    startActivity(intent);
+
+                    finish();
+                }
+            }
         }
 
     }
