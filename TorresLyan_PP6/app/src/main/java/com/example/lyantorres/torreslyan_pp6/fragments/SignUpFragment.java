@@ -99,7 +99,7 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
                 if (android.util.Patterns.EMAIL_ADDRESS.matcher(s).matches() && s.length() > 0) {
                     // is valid
                     updateFeedback(emailET, emailFeedback, true);
-                    mValidEmail = (String) s;
+                    mValidEmail = s.toString();
                 } else  {
                     // Isn't valid
                     updateFeedback(emailET, emailFeedback, false);
@@ -125,7 +125,7 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
                 if(s.length() >= 6){
                     // is valid
                     updateFeedback(passwordET, passwordFeedback, true);
-                    mValidPassword = (String) s;
+                    mValidPassword = s.toString();
                 } else {
                     updateFeedback(passwordET, passwordFeedback, false);
                 }
