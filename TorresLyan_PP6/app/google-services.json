@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "817419837530",
+    "firebase_url": "https://torreslyan-pp6.firebaseio.com",
+    "project_id": "torreslyan-pp6",
+    "storage_bucket": "torreslyan-pp6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817419837530:android:ef5480cb4658ba9f",
+        "android_client_info": {
+          "package_name": "com.example.lyantorres.torreslyan_pp6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817419837530-lvfeod8sbl085jhlb5b5fg1ld3jmq0pr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lyantorres.torreslyan_pp6",
+            "certificate_hash": "9a06871d85d3dcc1cc35fcd4580102083de6ba06"
+          }
+        },
+        {
+          "client_id": "817419837530-o1e0q3dddgnv4p26u3gn66467f6ivh4h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1nZpwLpDvlNngTJybYszIytW8UImuprs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817419837530-o1e0q3dddgnv4p26u3gn66467f6ivh4h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
