@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity implements SignInFragment.SignInInterface, SignUpFragment.SignUpInterface{
 
     private FirebaseAuth mAuth;
-    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
     // ===================================== SIGN UP FRAGMENT INTERFACE CALLBACKS =====================================
     @Override
     public void signUpWasPressed(String _email, String _password) {
-
-        mUser = new User(_email, _password);
 
         mAuth.createUserWithEmailAndPassword(_email, _password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

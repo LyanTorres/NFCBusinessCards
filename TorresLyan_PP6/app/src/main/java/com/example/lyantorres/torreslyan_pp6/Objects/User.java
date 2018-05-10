@@ -7,19 +7,15 @@ package com.example.lyantorres.torreslyan_pp6.Objects;
 
 public class User {
 
-    private String email;
-    private String password;
     private String name;
     private String jobTitle;
     private String phoneNumber;
     private String contactEmail;
+    private String smallCard;
+    private String largeCard;
 
-    public User(String _email, String _password){
-        email = _email;
-        password = _password;
+    public User(){
     }
-
-
 
 
     public void setName(String name) {
@@ -38,13 +34,12 @@ public class User {
         this.contactEmail = contactEmail;
     }
 
-
-    public String getEmail() {
-        return email;
+    public void setSmallCard(String smallCard) {
+        this.smallCard = smallCard;
     }
 
-    public String getPassword() {
-        return password;
+    public void setLargeCard(String largeCard) {
+        this.largeCard = largeCard;
     }
 
     public String getName() {
@@ -61,5 +56,13 @@ public class User {
 
     public String getContactEmail() {
         return contactEmail;
+    }
+
+    public String getSmallCard() {
+        return smallCard;
+    }
+
+    public String getLargeCard() {
+        return largeCard;
     }
 }
