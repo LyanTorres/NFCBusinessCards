@@ -11,6 +11,7 @@ import android.nfc.tech.Ndef;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.fragments.ExpandedListFragment;
@@ -50,6 +51,20 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
         IntentFilter filter2     = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
         mReadTagFilters = new IntentFilter[]{tagDetected,filter2};
+
+        if(getIntent() != null){
+            if(getIntent().getAction() != null){
+
+                Log.i("=== LYAN ==" , "========== \n onCreate: "+getIntent().getAction()+" \n ==========");
+                if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+                    mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+                    setIntent(getIntent());
+
+                    readTag(getIntent());
+                }
+            }
+        }
 
     }
 
