@@ -18,14 +18,25 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="135dp" />
+            android:layout_height="25dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/app_logo"
+            android:visibility="visible" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
 
         <EditText
             android:id="@+id/email_ET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
+            android:layout_marginRight="45dp"
             android:ems="10"
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress" />
@@ -39,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
+            android:layout_marginRight="45dp"
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword" />

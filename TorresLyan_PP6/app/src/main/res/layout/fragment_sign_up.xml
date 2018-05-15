@@ -17,7 +17,19 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="135dp" />
+            android:layout_height="25dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/app_logo"
+            android:visibility="visible" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
