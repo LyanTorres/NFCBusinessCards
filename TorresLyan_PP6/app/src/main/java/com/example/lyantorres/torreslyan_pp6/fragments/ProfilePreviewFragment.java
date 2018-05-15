@@ -110,6 +110,8 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                 DatabaseReference userSmallCard = userReference.child("smallCard");
                 DatabaseReference userLargeCard = userReference.child("largeCard");
 
+
+                // TODO: UPDATE THIS TO MAKE IT MORE EFFICIENT
                 userName.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
