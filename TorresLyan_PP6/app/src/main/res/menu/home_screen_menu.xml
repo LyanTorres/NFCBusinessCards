@@ -6,7 +6,7 @@
     android:title="@string/profile"
     android:id="@+id/homescreen_profile"
     app:showAsAction="always"
-    android:icon="@drawable/ic_person_white_24dp">
+    android:icon="@drawable/ic_person_black_24dp">
 </item>
 
 </menu>

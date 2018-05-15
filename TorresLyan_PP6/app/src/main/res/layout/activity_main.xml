@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.lyantorres.torreslyan_pp6.MainActivity">
 
-
     <FrameLayout
         android:id="@+id/main_frame"
         android:layout_width="0dp"
