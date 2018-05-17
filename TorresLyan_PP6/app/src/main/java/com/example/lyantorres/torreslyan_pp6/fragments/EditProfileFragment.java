@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.R;
 
 public class EditProfileFragment extends android.support.v4.app.Fragment {
@@ -52,7 +53,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
     }
 
     public interface EditProfileInterface{
-        void saveWasPressed(String _name, String _jobTitle, String _phone, String _email, String _smallCard, String _largeCard);
+        void saveWasPressed(User _user);
     }
 
     @Override
@@ -80,12 +81,21 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
             EditText smallET = getActivity().findViewById(R.id.edit_small_card);
             EditText largeET = getActivity().findViewById(R.id.edit_large_card);
 
+            String name = nameET.getText().toString();
+            String jobTitle = jobTitleET.getText().toString();
+            String phone = phoneET.getText().toString();
+            String email = emailET.getText().toString();
+            String smallCard = smallET.getText().toString();
+            String largeCard = largeET.getText().toString();
 
-            // TODO: Make this nicer
-            if(nameET.getText() != null && jobTitleET.getText() != null && phoneET.getText() != null && emailET.getText() != null && smallET.getText() != null && largeET.getText() != null){
+            if(name != null && jobTitle != null && phone != null && email != null && smallCard != null && largeCard != null){
 
                 if(mInterface != null){
-                    mInterface.saveWasPressed(nameET.getText().toString(), jobTitleET.getText().toString(), phoneET.getText().toString(), emailET.getText().toString(), smallET.getText().toString(), largeET.getText().toString());
+
+                    User userInfo = new User();
+                    userInfo.setUserInfo(name, jobTitle, phone,email,smallCard,largeCard);
+
+                    mInterface.saveWasPressed(userInfo);
                 }
             } else {
 

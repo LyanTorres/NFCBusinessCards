@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "416397345703",
+    "firebase_url": "https://torreslyan-pp6-eff38.firebaseio.com/",
+    "project_id": "torreslyan-pp6-eff38",
+    "storage_bucket": "torreslyan-pp6-eff38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416397345703:android:ef5480cb4658ba9f",
+        "android_client_info": {
+          "package_name": "com.example.lyantorres.torreslyan_pp6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "416397345703-5vqk8f1o2i8qpap5olp9k78c7mr85hif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOOmD_NEzwbv0_KLZRU_BRR2VnUVB7uTc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

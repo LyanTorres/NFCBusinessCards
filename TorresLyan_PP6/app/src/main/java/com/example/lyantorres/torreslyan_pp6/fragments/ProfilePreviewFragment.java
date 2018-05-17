@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
 import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +25,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
 
@@ -101,92 +105,29 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                 info.setVisibility(View.VISIBLE);
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
+
                 DatabaseReference userReference = database.getReference(currentUser.getUid());
+                DatabaseReference userContactInfo = userReference.child(DatabaseHelper.CONTACTINFO_REF);
 
-                DatabaseReference userName = userReference.child("name");
-                DatabaseReference userJob = userReference.child("jobTitle");
-                DatabaseReference userPhone = userReference.child("phone");
-                DatabaseReference userEmail = userReference.child("email");
-                DatabaseReference userSmallCard = userReference.child("smallCard");
-                DatabaseReference userLargeCard = userReference.child("largeCard");
-
-
-                // TODO: UPDATE THIS TO MAKE IT MORE EFFICIENT
-                userName.addValueEventListener(new ValueEventListener() {
+                userContactInfo.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
-                        mUser.setName(value);
-                        updateUI();
-                    }
+                        String userData = dataSnapshot.getValue(String.class);
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        if(userData != null) {
+                            try {
+                                JSONObject userJson = new JSONObject(userData);
 
-                    }
-                });
+                                if (userJson != null) {
+                                    mUser.readInJson(userJson);
+                                }
 
-                userJob.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
-                        mUser.setJobTitle(value);
-                        updateUI();
-                    }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
-
-                userPhone.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
-                        mUser.setPhoneNumber(value);
-                        updateUI();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                userEmail.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
-                        mUser.setContactEmail(value);
-                        updateUI();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                userSmallCard.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
-                        mUser.setSmallCard(value);
-                        updateUI();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                userLargeCard.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String value = dataSnapshot.getValue(String.class);
-                        mUser.setLargeCard(value);
                         updateUI();
                     }
 
@@ -206,6 +147,10 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
             if (mUser != null) {
 
                 if (getActivity() != null) {
+
+                    TextView emptyInfo = getActivity().findViewById(R.id.no_info_TV);
+                    LinearLayout contactInfo = getActivity().findViewById(R.id.contact_information_layout);
+
                     TextView userName = getActivity().findViewById(R.id.profile_name);
                     TextView userJob = getActivity().findViewById(R.id.profile_job_title);
                     TextView userPhone = getActivity().findViewById(R.id.profile_phone);
@@ -213,17 +158,30 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                     ImageView userSmall = getActivity().findViewById(R.id.small_card_IV);
                     ImageView userLarge = getActivity().findViewById(R.id.large_card_IV);
 
-                    if (userName != null && userJob != null && userPhone != null && userEmail != null && userSmall != null && userLarge != null) {
-                        userName.setText(mUser.getName());
-                        userJob.setText(mUser.getJobTitle());
-                        userPhone.setText(mUser.getPhoneNumber());
-                        userEmail.setText(mUser.getContactEmail());
-                        userSmall.setVisibility(View.INVISIBLE);
-                        userLarge.setVisibility(View.INVISIBLE);
+
+                    if(emptyInfo != null && contactInfo !=null) {
+
+                        if (mUser.name != null) {
+
+                            contactInfo.setVisibility(View.VISIBLE);
+                            emptyInfo.setVisibility(View.INVISIBLE);
+
+                            userName.setText(mUser.getName());
+                            userJob.setText(mUser.getJobTitle());
+                            userPhone.setText(mUser.getPhoneNumber());
+                            userEmail.setText(mUser.getContactEmail());
+
+                            // TODO: ADD THE ABILITY TO VIEW IMAGES THEY HAVE SELECTED
+                            userSmall.setVisibility(View.INVISIBLE);
+                            userLarge.setVisibility(View.INVISIBLE);
+                        } else {
+                            contactInfo.setVisibility(View.INVISIBLE);
+                            emptyInfo.setVisibility(View.VISIBLE);
+
+                        }
                     }
                 }
             }
-
     }
 
     @Override

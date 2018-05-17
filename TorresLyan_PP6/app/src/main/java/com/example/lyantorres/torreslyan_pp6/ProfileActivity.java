@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
+import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.fragments.EditProfileFragment;
 import com.example.lyantorres.torreslyan_pp6.fragments.ProfilePreviewFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,13 +61,17 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
         mNfcPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
+
+        final AlertDialog.Builder touchTagMessage = new AlertDialog.Builder(this);
+
         enableTagWriteMode();
 
-        new AlertDialog.Builder(this).setTitle("Touch tag to write").setNegativeButton("Cancel", null)
+        touchTagMessage.setIcon(R.drawable.nfc_icon);
+        touchTagMessage.setTitle("Write to NFC tag").setNegativeButton("Cancel", null).setMessage("Place the NFC tag where your device's NFC reader is to write your information to that tag.")
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                      disableTagWriteMode();
+                        disableTagWriteMode();
                     }
                 }).create().show();
 
@@ -80,26 +86,16 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
     }
 
     @Override
-    public void saveWasPressed(String _name, String _jobTitle, String _phone, String _email, String _smallCard, String _largeCard) {
+    public void saveWasPressed(User _user) {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userReference = database.getReference(currentUser.getUid());
 
-        DatabaseReference userName = userReference.child("name");
-        DatabaseReference userJob = userReference.child("jobTitle");
-        DatabaseReference userPhone = userReference.child("phone");
-        DatabaseReference userEmail = userReference.child("email");
-        DatabaseReference userSmallCard = userReference.child("smallCard");
-        DatabaseReference userLargeCard = userReference.child("largeCard");
+        DatabaseReference userInfo = userReference.child(DatabaseHelper.CONTACTINFO_REF);
 
-        userName.setValue(_name);
-        userJob.setValue(_jobTitle);
-        userPhone.setValue(_phone);
-        userEmail.setValue(_email);
-        userSmallCard.setValue(_smallCard);
-        userLargeCard.setValue(_largeCard);
+        userInfo.setValue(_user.getUserJSON());
 
         Toast.makeText(this, "Your changes have been saved", Toast.LENGTH_SHORT).show();
 

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "817419837530",
-    "firebase_url": "https://torreslyan-pp6.firebaseio.com",
-    "project_id": "torreslyan-pp6",
-    "storage_bucket": "torreslyan-pp6.appspot.com"
+    "project_number": "719162012055",
+    "firebase_url": "https://torreslyanpp6.firebaseio.com/",
+    "project_id": "torreslyanpp6",
+    "storage_bucket": "torreslyanpp6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:817419837530:android:ef5480cb4658ba9f",
+        "mobilesdk_app_id": "1:719162012055:android:ef5480cb4658ba9f",
         "android_client_info": {
           "package_name": "com.example.lyantorres.torreslyan_pp6"
         }
       },
       "oauth_client": [
         {
-          "client_id": "817419837530-lvfeod8sbl085jhlb5b5fg1ld3jmq0pr.apps.googleusercontent.com",
+          "client_id": "719162012055-k3d2vosjqn2qgtbd7i64lt99unluara2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.lyantorres.torreslyan_pp6",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "817419837530-o1e0q3dddgnv4p26u3gn66467f6ivh4h.apps.googleusercontent.com",
+          "client_id": "719162012055-dvsqhntohi8ucfkv92nusnhsnooq1vcq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD1nZpwLpDvlNngTJybYszIytW8UImuprs"
+          "current_key": "AIzaSyBpIeP-b0dG9qDs0y5ds3f69HbeqmswHKc"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "817419837530-o1e0q3dddgnv4p26u3gn66467f6ivh4h.apps.googleusercontent.com",
+              "client_id": "719162012055-dvsqhntohi8ucfkv92nusnhsnooq1vcq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
