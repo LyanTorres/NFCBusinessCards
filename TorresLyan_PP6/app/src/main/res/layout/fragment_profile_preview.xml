@@ -10,17 +10,17 @@
     <LinearLayout
         android:id="@+id/contact_information_layout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="35dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/sign_out"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="match_parent"
@@ -137,7 +137,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:text="Your account hasn't been set up yet.Press the edit button todo so."
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/sign_out"

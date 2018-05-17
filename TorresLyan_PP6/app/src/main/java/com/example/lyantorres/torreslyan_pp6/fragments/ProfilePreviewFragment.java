@@ -67,8 +67,9 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
         }
     }
 
+
     public interface ProfilePreviewFragmentInterface{
-        void editWasClicked();
+        void editWasClicked(User _user);
         void saveToNFCWasClicked();
         void signOutWasClicked();
     }
@@ -195,7 +196,7 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
         if(item.getItemId() == R.id.edit_profile){
 
             if(mInterface != null){
-                mInterface.editWasClicked();
+                mInterface.editWasClicked(mUser);
             }
         } else if (item.getItemId() ==  R.id.save_to_nfc_profile){
 
@@ -206,6 +207,4 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
 
         return true;
     }
-
-
 }

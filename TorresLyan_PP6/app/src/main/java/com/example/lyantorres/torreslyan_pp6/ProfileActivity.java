@@ -50,8 +50,9 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
     }
 
     @Override
-    public void editWasClicked() {
-        getSupportFragmentManager().beginTransaction().addToBackStack("editing").replace(R.id.profile_frame, EditProfileFragment.newInstance()).commit();
+    public void editWasClicked(User _user) {
+
+        getSupportFragmentManager().beginTransaction().addToBackStack("editing").replace(R.id.profile_frame, EditProfileFragment.newInstance(_user)).commit();
     }
 
     @Override

@@ -21,6 +21,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
 
     private EditProfileInterface mInterface;
+    private static User mUser;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -34,7 +35,8 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
     }
 
-    public static EditProfileFragment newInstance() {
+    public static EditProfileFragment newInstance(User _user) {
+        mUser = _user;
 
         Bundle args = new Bundle();
 
@@ -61,6 +63,29 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(getActivity() != null && mUser.name != null){
+
+            EditText nameET = getActivity().findViewById(R.id.edit_name);
+            EditText jobTitleET = getActivity().findViewById(R.id.edit_job_title);
+            EditText phoneET = getActivity().findViewById(R.id.edit_phone_number);
+            EditText emailET = getActivity().findViewById(R.id.edit_email);
+            EditText smallET = getActivity().findViewById(R.id.edit_small_card);
+            EditText largeET = getActivity().findViewById(R.id.edit_large_card);
+
+            nameET.setText(mUser.getName());
+            jobTitleET.setText(mUser.getJobTitle());
+            phoneET.setText(mUser.getPhoneNumber());
+            emailET.setText(mUser.getContactEmail());
+            smallET.setText(mUser.getSmallCard());
+            largeET.setText(mUser.getLargeCard());
+
+        }
     }
 
     @Override
