@@ -4,6 +4,7 @@ package com.example.lyantorres.torreslyan_pp6.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,11 +24,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ExpandedListFragment extends ListFragment {
@@ -92,10 +96,23 @@ public class ExpandedListFragment extends ListFragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    ArrayList savedCards = dataSnapshot.getValue(ArrayList.class);
+                  //JSONArray savedCards = dataSnapshot.getValue(JSONArray.class);
+                    GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                  ArrayList<String> savedCards = dataSnapshot.getValue(t);
 
                     if (savedCards != null) {
+                        mSavedCardsUUID.clear();
+                        mSavedCards.clear();
+
                         mSavedCardsUUID = savedCards;
+                        Log.i("=== LYAN ===", "========== \n onDataChange: ARRAY SIZE: "+mSavedCardsUUID.size()+" \n ==========");
+
+//                        try {
+//                            mSavedCardsUUID = new User().convertSavedCardsJson(savedCards);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            Log.i("=== LYAN ===", "========== \n onDataChange: ERROR WITH JSON DATABASE \n ==========");
+//                        }
                     }
 
                     getSavedCardsData();

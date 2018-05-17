@@ -15,11 +15,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
+import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.fragments.ExpandedListFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -116,11 +119,11 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 String result = new String(payload);
 
                 mSavedCardsStrings.add(result);
-                Toast.makeText(this, "You have added: "+ result, Toast.LENGTH_SHORT).show();
 
                 saveToDatabase();
                 ndef.close();
 
+                Toast.makeText(this, "You have added: "+ result, Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception e) {
@@ -135,8 +138,17 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference(user.getUid());
         final DatabaseReference savedCards = userRef.child(DatabaseHelper.SAVEDCARDS_REF);
+//
+//        String[] cards = new String[mSavedCardsStrings.size()];
+//
+//        for(int i = 0; i < mSavedCardsStrings.size(); i ++){
+//            cards[i] = mSavedCardsStrings.get(i);
+//        }
+//
+//        savedCards.setValue(new User().getSavedCardsArray(cards));
 
         savedCards.setValue(mSavedCardsStrings);
+
     }
 
     @Override

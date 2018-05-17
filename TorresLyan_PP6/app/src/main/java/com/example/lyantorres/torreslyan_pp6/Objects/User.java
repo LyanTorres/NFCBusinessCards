@@ -7,10 +7,13 @@ package com.example.lyantorres.torreslyan_pp6.Objects;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class User implements Serializable{
 
@@ -63,6 +66,29 @@ public class User implements Serializable{
 
         }
 
+    }
+
+    public JSONArray getSavedCardsArray(String[] _array){
+
+        JSONArray cards = new JSONArray();
+
+        for(int i = 0; i < _array.length; i ++) {
+            cards.put(_array[i]);
+        }
+
+        return cards;
+
+    }
+
+    public ArrayList<String> convertSavedCardsJson(JSONArray _jsonArray) throws JSONException {
+
+        ArrayList<String> cards = new ArrayList<>();
+
+        for(int i = 0; i < _jsonArray.length(); i ++) {
+            cards.add(String.valueOf(_jsonArray.getInt(i)));
+        }
+
+        return cards;
     }
 
     public void setUserInfo(String _name, String _jobTitle, String _phone, String _email, String _smallCard, String _largeCard){
