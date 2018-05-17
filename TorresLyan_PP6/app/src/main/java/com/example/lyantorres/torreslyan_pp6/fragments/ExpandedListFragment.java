@@ -130,6 +130,8 @@ public class ExpandedListFragment extends ListFragment {
         if(item.getItemId() == R.id.homescreen_profile){
 
             if(mInterface != null){
+                mSavedCardsUUID.clear();
+                mSavedCards.clear();
                 mInterface.profileClicked();
             }
         }
