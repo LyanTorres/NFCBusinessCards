@@ -18,8 +18,12 @@ import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
 import com.example.lyantorres.torreslyan_pp6.fragments.ExpandedListFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,7 +34,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     private Tag mDetectedTag;
     private IntentFilter[] mReadTagFilters;
     private PendingIntent mPendingIntent;
-    private final ArrayList<String> mSavedCardsStrings = new ArrayList<>();
+    private ArrayList<String> mSavedCardsStrings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,8 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 }
             }
         }
+
+        getData();
 
     }
 
@@ -115,12 +121,18 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 byte[] payload = record.getPayload();
                 String result = new String(payload);
 
-                mSavedCardsStrings.add(result);
+                if(!mSavedCardsStrings.contains(result)) {
+                    mSavedCardsStrings.add(result);
+                    saveToDatabase();
+                    Toast.makeText(this, "You have added: "+ result, Toast.LENGTH_SHORT).show();
 
-                saveToDatabase();
+                } else {
+                    Toast.makeText(this, "You have already saved this contact", Toast.LENGTH_SHORT).show();
+                }
+
+
                 ndef.close();
 
-                Toast.makeText(this, "You have added: "+ result, Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception e) {
@@ -144,6 +156,38 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     public void profileClicked() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
+    }
+
+    private void getData(){
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference userReference = database.getReference(currentUser.getUid());
+        DatabaseReference userContactInfo = userReference.child(DatabaseHelper.SAVEDCARDS_REF);
+
+        userContactInfo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                ArrayList<String> savedCards = dataSnapshot.getValue(t);
+
+                mSavedCardsStrings = new ArrayList<>();
+
+                if (savedCards != null) {
+
+                    mSavedCardsStrings = savedCards;
+                    Log.i("=== LYAN ===", "========== \n onDataChange: ARRAY SIZE: "+mSavedCardsStrings.size()+" \n ==========");
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

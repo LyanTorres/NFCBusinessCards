@@ -96,9 +96,10 @@ public class ExpandedListFragment extends ListFragment {
                     GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
                     ArrayList<String> savedCards = dataSnapshot.getValue(t);
 
+                    mSavedCardsUUID.clear();
+                    mSavedCards.clear();
+
                     if (savedCards != null) {
-                        mSavedCardsUUID.clear();
-                        mSavedCards.clear();
 
                         mSavedCardsUUID = savedCards;
                         Log.i("=== LYAN ===", "========== \n onDataChange: ARRAY SIZE: "+mSavedCardsUUID.size()+" \n ==========");
@@ -130,6 +131,7 @@ public class ExpandedListFragment extends ListFragment {
         if(item.getItemId() == R.id.homescreen_profile){
 
             if(mInterface != null){
+                mSavedCards.clear();
                 mSavedCardsUUID.clear();
                 mInterface.profileClicked();
             }
@@ -157,7 +159,10 @@ public class ExpandedListFragment extends ListFragment {
                             if (userJson != null) {
                                 User newUser = new User();
                                 newUser.readInJson(userJson);
-                                mSavedCards.add(newUser);
+
+                                if(!mSavedCards.contains(newUser)) {
+                                    mSavedCards.add(newUser);
+                                }
                             }
 
                         } catch (JSONException e) {
