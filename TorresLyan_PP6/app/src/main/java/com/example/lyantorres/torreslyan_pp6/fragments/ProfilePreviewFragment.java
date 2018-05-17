@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,14 +169,13 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                             contactInfo.setVisibility(View.VISIBLE);
                             emptyInfo.setVisibility(View.INVISIBLE);
 
-                            userName.setText(mUser.getName());
-                            userJob.setText(mUser.getJobTitle());
-                            userPhone.setText(mUser.getPhoneNumber());
-                            userEmail.setText(mUser.getContactEmail());
+                            userName.setText("Name: " + mUser.getName());
+                            userJob.setText("Job title: " +mUser.getJobTitle());
+                            userPhone.setText("Phone: " +mUser.getPhoneNumber());
+                            userEmail.setText("Email: " +mUser.getContactEmail());
 
-                            // TODO: ADD THE ABILITY TO VIEW IMAGES THEY HAVE SELECTED
-                            userSmall.setVisibility(View.INVISIBLE);
-                            userLarge.setVisibility(View.INVISIBLE);
+                            Picasso.with(getContext()).load(mUser.getSmallCard()).fit().placeholder(R.drawable.app_logo).into(userSmall);
+                            Picasso.with(getContext()).load(mUser.getLargeCard()).fit().placeholder(R.drawable.app_logo).into(userLarge);
                         } else {
                             contactInfo.setVisibility(View.INVISIBLE);
                             emptyInfo.setVisibility(View.VISIBLE);

@@ -81,7 +81,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,7 +93,8 @@
                     android:id="@+id/textView4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/your_at_a_glance_business_card" />
+                    android:text="@string/your_at_a_glance_business_card"
+                    android:textSize="20dp"/>
 
                 <Space
                     android:layout_width="match_parent"
@@ -106,13 +108,14 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="15dp" />
+                    android:layout_height="8dp" />
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/your_more_detaileed_business_card" />
+                    android:text="@string/your_more_detaileed_business_card"
+                    android:textSize="20dp"/>
 
                 <Space
                     android:layout_width="match_parent"

@@ -21,9 +21,9 @@
             android:text="TextView"
             android:textColor="@android:color/black"
             android:textSize="18sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="25dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="35dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,8 +35,8 @@
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
 
         <TextView
             android:id="@+id/list_secondItem_TV"
@@ -45,8 +45,8 @@
             android:layout_weight="0"
             android:text="TextView"
             android:textSize="18sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

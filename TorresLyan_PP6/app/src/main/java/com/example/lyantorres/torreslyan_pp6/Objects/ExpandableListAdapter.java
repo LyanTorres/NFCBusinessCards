@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -30,7 +33,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
 
     public int getChildrenCount(int groupPosition) {
-        return mSavedCards.size();
+        return 1;
     }
 
     @Override
@@ -84,8 +87,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        // TODO: SET UP CHILD VIEW lol
-        return null;
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item, null);
+        }
+
+        ImageButton ib = convertView.findViewById(R.id.list_item_imageButton);
+
+        //Picasso.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).into(ib);
+
+        Picasso.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).fit().placeholder(R.drawable.app_logo).into(ib);
+
+        Toast.makeText(mContext, "Reading in: " + mSavedCards.get(groupPosition).getSmallCard(), Toast.LENGTH_SHORT).show();
+
+        return convertView;
     }
 
     @Override

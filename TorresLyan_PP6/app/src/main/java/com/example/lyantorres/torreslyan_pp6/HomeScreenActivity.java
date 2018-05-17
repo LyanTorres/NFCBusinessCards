@@ -138,14 +138,6 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference(user.getUid());
         final DatabaseReference savedCards = userRef.child(DatabaseHelper.SAVEDCARDS_REF);
-//
-//        String[] cards = new String[mSavedCardsStrings.size()];
-//
-//        for(int i = 0; i < mSavedCardsStrings.size(); i ++){
-//            cards[i] = mSavedCardsStrings.get(i);
-//        }
-//
-//        savedCards.setValue(new User().getSavedCardsArray(cards));
 
         savedCards.setValue(mSavedCardsStrings);
 

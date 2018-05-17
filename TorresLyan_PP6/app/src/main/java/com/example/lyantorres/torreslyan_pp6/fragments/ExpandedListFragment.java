@@ -96,9 +96,8 @@ public class ExpandedListFragment extends ListFragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                  //JSONArray savedCards = dataSnapshot.getValue(JSONArray.class);
                     GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
-                  ArrayList<String> savedCards = dataSnapshot.getValue(t);
+                    ArrayList<String> savedCards = dataSnapshot.getValue(t);
 
                     if (savedCards != null) {
                         mSavedCardsUUID.clear();
@@ -107,12 +106,6 @@ public class ExpandedListFragment extends ListFragment {
                         mSavedCardsUUID = savedCards;
                         Log.i("=== LYAN ===", "========== \n onDataChange: ARRAY SIZE: "+mSavedCardsUUID.size()+" \n ==========");
 
-//                        try {
-//                            mSavedCardsUUID = new User().convertSavedCardsJson(savedCards);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            Log.i("=== LYAN ===", "========== \n onDataChange: ERROR WITH JSON DATABASE \n ==========");
-//                        }
                     }
 
                     getSavedCardsData();
