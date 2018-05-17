@@ -5,17 +5,24 @@ import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.R;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class EditProfileFragment extends android.support.v4.app.Fragment {
 
@@ -69,6 +76,10 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if(getActivity() != null){
+            setUpListeners();
+        }
+
         if(getActivity() != null && mUser.name != null){
 
             EditText nameET = getActivity().findViewById(R.id.edit_name);
@@ -84,7 +95,6 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
             emailET.setText(mUser.getContactEmail());
             smallET.setText(mUser.getSmallCard());
             largeET.setText(mUser.getLargeCard());
-
         }
     }
 
@@ -106,14 +116,15 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
             EditText smallET = getActivity().findViewById(R.id.edit_small_card);
             EditText largeET = getActivity().findViewById(R.id.edit_large_card);
 
-            String name = nameET.getText().toString();
-            String jobTitle = jobTitleET.getText().toString();
-            String phone = phoneET.getText().toString();
-            String email = emailET.getText().toString();
-            String smallCard = smallET.getText().toString();
-            String largeCard = largeET.getText().toString();
 
-            if(name != null && jobTitle != null && phone != null && email != null && smallCard != null && largeCard != null){
+            if(isValid(nameET) && isValid(jobTitleET) && isValid(phoneET) && isValid(emailET) && isValid(smallET) && isValid(largeET)){
+
+                String name = nameET.getText().toString();
+                String jobTitle = jobTitleET.getText().toString();
+                String phone = phoneET.getText().toString();
+                String email = emailET.getText().toString();
+                String smallCard = smallET.getText().toString();
+                String largeCard = largeET.getText().toString();
 
                 if(mInterface != null){
 
@@ -129,5 +140,184 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         }
 
         return true;
+    }
+
+    private void setUpListeners(){
+
+        final EditText nameET = getActivity().findViewById(R.id.edit_name);
+        final EditText jobTitleET = getActivity().findViewById(R.id.edit_job_title);
+        final EditText phoneET = getActivity().findViewById(R.id.edit_phone_number);
+        final EditText emailET = getActivity().findViewById(R.id.edit_email);
+        final EditText smallET = getActivity().findViewById(R.id.edit_small_card);
+        final EditText largeET = getActivity().findViewById(R.id.edit_large_card);
+
+        final ImageView nameFeedback = getActivity().findViewById(R.id.edit_name_feedback_IV);
+        final ImageView jobFeedback = getActivity().findViewById(R.id.edit_jt_feedback_IV);
+        final ImageView phoneFeedback = getActivity().findViewById(R.id.edit_pn_feedback_IV);
+        final ImageView emailFeedback = getActivity().findViewById(R.id.edit_email_feedback_IV);
+        final ImageView smallFeedBack = getActivity().findViewById(R.id.edit_small_feedback_IV);
+        final ImageView largeFeedback = getActivity().findViewById(R.id.edit_large_feedback_IV);
+
+        nameET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.length() > 0){
+                    // VALID
+                    updateFeedback(nameET, nameFeedback, true);
+
+                } else {
+                    updateFeedback(nameET, nameFeedback, false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        jobTitleET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() > 0){
+                    // VALID
+                    updateFeedback(jobTitleET, jobFeedback, true);
+
+                } else {
+                    updateFeedback(jobTitleET, jobFeedback, false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        phoneET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() == 10){
+                    // VALID
+                    updateFeedback(phoneET, phoneFeedback, true);
+
+                } else {
+                    updateFeedback(phoneET, phoneFeedback, false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        emailET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(s).matches() && s.length() > 0) {
+                    // VALID
+                    updateFeedback(emailET, emailFeedback, true);
+
+                } else {
+                    updateFeedback(emailET,emailFeedback, false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        smallET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(URLUtil.isHttpsUrl(s.toString())) {
+                    updateFeedback(smallET, smallFeedBack, true);
+                } else {
+                    updateFeedback(smallET, smallFeedBack, false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        largeET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(URLUtil.isHttpsUrl(s.toString())) {
+                    updateFeedback(largeET, largeFeedback, true);
+                } else {
+                    updateFeedback(largeET, largeFeedback, false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+
+
+    private void updateFeedback(EditText _editText, ImageView _imageView, Boolean _isValid){
+
+        if(_isValid){
+            _editText.setTextColor(getResources().getColor(R.color.green, getActivity().getTheme()));
+            _editText.setHighlightColor(getResources().getColor(R.color.green, getActivity().getTheme()));
+            _imageView.setVisibility(View.VISIBLE);
+            _imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_green_24dp));
+        } else {
+            _editText.setTextColor(getResources().getColor(R.color.red, getActivity().getTheme()));
+            _editText.setHighlightColor(getResources().getColor(R.color.red, getActivity().getTheme()));
+            _imageView.setVisibility(View.VISIBLE);
+            _imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear_red_24dp));
+        }
+    }
+
+    private Boolean isValid(EditText _editText){
+
+        if(_editText.getCurrentTextColor() == getResources().getColor(R.color.green)){
+            return true;
+        }
+
+        return false;
     }
 }

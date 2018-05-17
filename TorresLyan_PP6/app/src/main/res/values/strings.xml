@@ -21,6 +21,6 @@
     <string name="your_at_a_glance_business_card">Your at a glance business card:</string>
     <string name="your_more_detaileed_business_card">Your more detailed Business card:</string>
     <string name="save">Save</string>
-    <string name="at_a_glance_card">At a glance card</string>
-    <string name="detailed_card">Detailed card</string>
+    <string name="at_a_glance_card">Https://at_a_glance_card.com</string>
+    <string name="detailed_card">Https://detailed_card.com</string>
 </resources>
