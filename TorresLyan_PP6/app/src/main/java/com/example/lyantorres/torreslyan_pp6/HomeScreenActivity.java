@@ -142,7 +142,6 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     @Override
     public void profileClicked() {
-        mSavedCardsStrings.clear();
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }

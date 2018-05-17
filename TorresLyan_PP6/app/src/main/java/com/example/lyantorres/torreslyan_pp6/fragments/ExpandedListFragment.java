@@ -131,7 +131,6 @@ public class ExpandedListFragment extends ListFragment {
 
             if(mInterface != null){
                 mSavedCardsUUID.clear();
-                mSavedCards.clear();
                 mInterface.profileClicked();
             }
         }
