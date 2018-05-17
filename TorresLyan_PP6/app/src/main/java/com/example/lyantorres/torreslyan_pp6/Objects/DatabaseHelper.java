@@ -9,7 +9,7 @@ public final class DatabaseHelper {
 
     // REFS
     public static final String CONTACTINFO_REF = "contactInfo";
-    public final String SAVEDCARDS_REF = "savedCards";
+    public static final String SAVEDCARDS_REF = "savedCards";
 
     public static final String NAME_KEY = "name";
     public static final String JOBTITLE_KEY = "jobTitle";

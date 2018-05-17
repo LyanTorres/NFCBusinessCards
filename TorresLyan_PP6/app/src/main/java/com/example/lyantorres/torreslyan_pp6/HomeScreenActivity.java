@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
 import com.example.lyantorres.torreslyan_pp6.fragments.ExpandedListFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +30,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     private Tag mDetectedTag;
     private IntentFilter[] mReadTagFilters;
     private PendingIntent mPendingIntent;
-    private ArrayList<String> savedCardsStrings = new ArrayList<>();
+    private ArrayList<String> mSavedCardsStrings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 byte[] payload = record.getPayload();
                 String result = new String(payload);
 
-                savedCardsStrings.add(result);
+                mSavedCardsStrings.add(result);
                 Toast.makeText(this, "You have added: "+ result, Toast.LENGTH_SHORT).show();
 
                 saveToDatabase();
@@ -133,9 +134,9 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference(user.getUid());
-        final DatabaseReference savedCards = userRef.child("savedCards");
+        final DatabaseReference savedCards = userRef.child(DatabaseHelper.SAVEDCARDS_REF);
 
-        savedCards.setValue(savedCardsStrings);
+        savedCards.setValue(mSavedCardsStrings);
     }
 
     @Override

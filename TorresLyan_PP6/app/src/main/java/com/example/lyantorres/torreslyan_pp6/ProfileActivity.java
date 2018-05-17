@@ -58,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
     @Override
     public void saveToNFCWasClicked() {
 
+
+
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);

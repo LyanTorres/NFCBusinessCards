@@ -3,7 +3,6 @@ package com.example.lyantorres.torreslyan_pp6.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,13 +10,32 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 
+import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
+import com.example.lyantorres.torreslyan_pp6.Objects.ExpandableListAdapter;
+import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ExpandedListFragment extends ListFragment {
 
-
+    private FirebaseAuth mAuth;
     private ExpandedListFragmentInterface mInterface;
+    private ArrayList<String> mSavedCardsUUID = new ArrayList<>();
+    private ArrayList<User> mSavedCards = new ArrayList<>();
 
     public ExpandedListFragment() {
         // Required empty public constructor
@@ -39,10 +57,13 @@ public class ExpandedListFragment extends ListFragment {
         return fragment;
     }
 
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if(context instanceof ExpandedListFragmentInterface){
+            mAuth = FirebaseAuth.getInstance();
             mInterface = (ExpandedListFragmentInterface) context;
         }
     }
@@ -58,8 +79,36 @@ public class ExpandedListFragment extends ListFragment {
 
         setHasOptionsMenu(true);
 
-        // TODO: SET ADAPTER
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        if (currentUser != null) {
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+            DatabaseReference userReference = database.getReference(currentUser.getUid());
+            DatabaseReference userContactInfo = userReference.child(DatabaseHelper.SAVEDCARDS_REF);
+
+            userContactInfo.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    ArrayList savedCards = dataSnapshot.getValue(ArrayList.class);
+
+                    if (savedCards != null) {
+                        mSavedCardsUUID = savedCards;
+                    }
+
+                    getSavedCardsData();
+                    updateUI();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
     }
 
     @Override
@@ -78,5 +127,55 @@ public class ExpandedListFragment extends ListFragment {
             }
         }
         return true;
+    }
+
+    private void getSavedCardsData(){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        for(int i = 0; i < mSavedCardsUUID.size(); i ++){
+            DatabaseReference userReference = database.getReference(mSavedCardsUUID.get(i));
+            DatabaseReference userInfo= userReference.child(DatabaseHelper.CONTACTINFO_REF);
+
+            userInfo.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String userData = dataSnapshot.getValue(String.class);
+
+                    if(userData != null) {
+                        try {
+                            JSONObject userJson = new JSONObject(userData);
+
+                            if (userJson != null) {
+                                User newUser = new User();
+                                newUser.readInJson(userJson);
+                                mSavedCards.add(newUser);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    updateUI();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            updateUI();
+        }
+    }
+
+    private void updateUI(){
+
+        if (getActivity() != null){
+            ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), mSavedCards);
+            ExpandableListView lv = getActivity().findViewById(android.R.id.list);
+            lv.setAdapter(adapter);
+        }
     }
 }

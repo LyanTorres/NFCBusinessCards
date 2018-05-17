@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
 import com.example.lyantorres.torreslyan_pp6.Objects.User;
@@ -200,8 +201,12 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
             }
         } else if (item.getItemId() ==  R.id.save_to_nfc_profile){
 
-            if(mInterface != null){
-                mInterface.saveToNFCWasClicked();
+            if(mUser.getName() != null && !mUser.getName().isEmpty()) {
+                if (mInterface != null) {
+                    mInterface.saveToNFCWasClicked();
+                }
+            } else {
+                Toast.makeText(getContext(), "You have to set up your profile first.", Toast.LENGTH_SHORT).show();
             }
         }
 

@@ -10,7 +10,6 @@
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:text="You have no saved cards"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
