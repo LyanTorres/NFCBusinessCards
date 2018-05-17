@@ -59,7 +59,7 @@ public class SignInFragment extends android.support.v4.app.Fragment {
     }
 
     //  ===================================== LISTENERS =====================================
-    private View.OnClickListener signUpWasClicked = new View.OnClickListener() {
+    private final View.OnClickListener signUpWasClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -69,7 +69,7 @@ public class SignInFragment extends android.support.v4.app.Fragment {
         }
     };
 
-    private View.OnClickListener signInWasClicked = new View.OnClickListener() {
+    private final View.OnClickListener signInWasClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 

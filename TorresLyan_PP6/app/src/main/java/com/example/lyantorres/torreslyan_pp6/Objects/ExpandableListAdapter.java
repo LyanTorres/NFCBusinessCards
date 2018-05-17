@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context mContext;
-    private ArrayList<User> mSavedCards = new ArrayList<>();
+    private final Context mContext;
+    private final ArrayList<User> mSavedCards;
 
     public ExpandableListAdapter(Context _context, ArrayList<User> _arrayList){
         mContext = _context;

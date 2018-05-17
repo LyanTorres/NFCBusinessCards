@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
 import com.example.lyantorres.torreslyan_pp6.Objects.ExpandableListAdapter;
@@ -27,11 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ExpandedListFragment extends ListFragment {
@@ -39,7 +36,7 @@ public class ExpandedListFragment extends ListFragment {
     private FirebaseAuth mAuth;
     private ExpandedListFragmentInterface mInterface;
     private ArrayList<String> mSavedCardsUUID = new ArrayList<>();
-    private ArrayList<User> mSavedCards = new ArrayList<>();
+    private final ArrayList<User> mSavedCards = new ArrayList<>();
 
     public ExpandedListFragment() {
         // Required empty public constructor

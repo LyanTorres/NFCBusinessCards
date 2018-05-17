@@ -3,7 +3,6 @@ package com.example.lyantorres.torreslyan_pp6.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,9 +19,6 @@ import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.R;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class EditProfileFragment extends android.support.v4.app.Fragment {
 
@@ -314,10 +310,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
     private Boolean isValid(EditText _editText){
 
-        if(_editText.getCurrentTextColor() == getResources().getColor(R.color.green)){
-            return true;
-        }
+        return _editText.getCurrentTextColor() == getResources().getColor(R.color.green);
 
-        return false;
     }
 }

@@ -12,17 +12,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class User implements Serializable{
 
     public String name;
-    public String jobTitle;
-    public String phoneNumber;
-    public String contactEmail;
-    public String smallCard;
-    public String largeCard;
+    private String jobTitle;
+    private String phoneNumber;
+    private String contactEmail;
+    private String smallCard;
+    private String largeCard;
 
     public User(){
     }
@@ -72,8 +71,8 @@ public class User implements Serializable{
 
         JSONArray cards = new JSONArray();
 
-        for(int i = 0; i < _array.length; i ++) {
-            cards.put(_array[i]);
+        for (String card : _array) {
+            cards.put(card);
         }
 
         return cards;

@@ -10,43 +10,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="1dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/list_firstItem_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="0"
             android:text="TextView"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="35dp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="0"
             android:text="-"
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"/>
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/list_secondItem_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="0"
             android:text="TextView"
-            android:textSize="18sp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"/>
+            android:textSize="18sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

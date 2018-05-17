@@ -15,14 +15,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
-import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.fragments.ExpandedListFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -33,7 +30,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     private Tag mDetectedTag;
     private IntentFilter[] mReadTagFilters;
     private PendingIntent mPendingIntent;
-    private ArrayList<String> mSavedCardsStrings = new ArrayList<>();
+    private final ArrayList<String> mSavedCardsStrings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -61,7 +61,7 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
     }
 
     //  ===================================== LISTENERS =====================================
-    private View.OnClickListener signUpWasClicked = new View.OnClickListener() {
+    private final View.OnClickListener signUpWasClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -90,7 +90,7 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
 
             final EditText emailET = (EditText)getActivity().findViewById(R.id.sign_up_email_ET);
 
-            ImageView emailFeedback = (ImageView)getActivity().findViewById(R.id.sign_up_email_feedback_IV);
+            final ImageView emailFeedback = (ImageView)getActivity().findViewById(R.id.sign_up_email_feedback_IV);
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,8 +117,8 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
 
         password.addTextChangedListener(new TextWatcher() {
 
-            EditText passwordET = (EditText)getActivity().findViewById(R.id.sign_up_password_ET);
-            ImageView passwordFeedback = (ImageView)getActivity().findViewById(R.id.sign_up_password_feedback_IV);
+            final EditText passwordET = (EditText)getActivity().findViewById(R.id.sign_up_password_ET);
+            final ImageView passwordFeedback = (ImageView)getActivity().findViewById(R.id.sign_up_password_feedback_IV);
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -5,14 +5,12 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -27,12 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 public class ProfileActivity extends AppCompatActivity implements ProfilePreviewFragment.ProfilePreviewFragmentInterface, EditProfileFragment.EditProfileInterface{
 
-    boolean mWriteMode = false;
+    private boolean mWriteMode = false;
     private NfcAdapter mNfcAdapter;
     private PendingIntent mNfcPendingIntent;
 
@@ -122,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
         }
     }
 
-    public boolean writeTag(NdefMessage message, Tag tag) {
+    private boolean writeTag(NdefMessage message, Tag tag) {
         int size = message.toByteArray().length;
         try {
             Ndef ndef = Ndef.get(tag);

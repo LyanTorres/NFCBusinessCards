@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.fragments.SignInFragment;
 import com.example.lyantorres.torreslyan_pp6.fragments.SignUpFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
             if(getIntent() != null) {
 
-                if(getIntent().getAction() != "SIGNOUT") {
+                if(!getIntent().getAction().equals("SIGNOUT")) {
 
                     // they are signed in so don't make them sign in again
                     Intent intent = new Intent(this, HomeScreenActivity.class);
