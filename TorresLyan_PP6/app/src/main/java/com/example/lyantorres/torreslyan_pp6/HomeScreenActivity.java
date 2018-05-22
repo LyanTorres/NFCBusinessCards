@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
+import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.fragments.ExpandedListFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,12 +44,13 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
         getSupportFragmentManager().beginTransaction().replace(R.id.homescreen_frame, ExpandedListFragment.newInstance()).commit();
 
-
+        // making sure that the adapter knows who to talk to when reading an NFC
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mDetectedTag =getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
         mAuth = FirebaseAuth.getInstance();
 
+        // Setting up the NFC handling
         mPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
                 new Intent(this,getClass()).
                         addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -57,15 +59,15 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         IntentFilter filter2     = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
         mReadTagFilters = new IntentFilter[]{tagDetected,filter2};
 
+
+        // this handles when an NFC is used to open the application
         if(getIntent() != null){
             if(getIntent().getAction() != null){
 
-                Log.i("=== LYAN ==" , "========== \n onCreate: "+getIntent().getAction()+" \n ==========");
                 if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
                     mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
                     setIntent(getIntent());
-
                     readTag(getIntent());
                 }
             }
@@ -75,16 +77,12 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     }
 
+    // ===================================== NFC HANDLING =====================================
+
     @Override
     protected void onResume() {
-
         super.onResume();
         mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mReadTagFilters, null);
-    }
-
-    @Override
-    public void itemClicked() {
-
     }
 
     @Override
@@ -96,7 +94,6 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 mDetectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
                 setIntent(intent);
-
                 readTag(getIntent());
             }
         }
@@ -140,6 +137,8 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         }
     }
 
+    // ===================================== DATABASE  =====================================
+
     private void saveToDatabase(){
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -150,12 +149,6 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
         savedCards.setValue(mSavedCardsStrings);
 
-    }
-
-    @Override
-    public void profileClicked() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
     }
 
     private void getData(){
@@ -176,9 +169,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
                 if (savedCards != null) {
                     mSavedCardsStrings = savedCards;
-
                 }
-
             }
 
             @Override
@@ -187,5 +178,27 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
             }
         });
     }
+
+    // ===================================== EXPANDABLE LIST FRAGMENT INTERFACE CALLBACKS =====================================
+
+    @Override
+    public void itemClicked() {
+
+    }
+
+    @Override
+    public void profileClicked() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+        mNfcAdapter.disableReaderMode(this);
+    }
+
+    @Override
+    public void searchClicked(ArrayList<User> _savedCards) {
+        Intent searchIntent = new Intent();
+        searchIntent.setAction(Intent.ACTION_SEARCH);
+        startActivityForResult(searchIntent, 101);
+    }
+
 
 }

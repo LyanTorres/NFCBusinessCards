@@ -32,12 +32,14 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
     protected void onStart() {
         super.onStart();
 
+        // Checking if the user was already logged in
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser != null) {
 
             if(getIntent() != null) {
 
+                // But if they signed out then let them sign in/ up if they want to
                 if(!getIntent().getAction().equals("SIGNOUT")) {
 
                     // they are signed in so don't make them sign in again
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
     @Override
     public void signInWasPressed(String _email, String _password) {
 
+        // authenticating user and making sure they have an account
         mAuth.signInWithEmailAndPassword(_email, _password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -69,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
                     finish();
 
                 } else {
+
+                    // Something went wrong so let the user know
                     Toast.makeText(getBaseContext(), "Invalid email or password, please try again", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -86,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
     @Override
     public void signUpWasPressed(String _email, String _password) {
 
+        // Add their email and password to firebase's authentication so that they can log in in the future
         mAuth.createUserWithEmailAndPassword(_email, _password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -97,10 +103,10 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
                             Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
                             startActivity(intent);
-
                             finish();
 
                         } else {
+                            // Let the user know that something went wrong with their sign up
                             Toast.makeText(getBaseContext(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
 
                         }

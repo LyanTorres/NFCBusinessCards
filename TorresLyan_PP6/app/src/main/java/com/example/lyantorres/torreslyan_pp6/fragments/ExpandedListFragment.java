@@ -75,6 +75,8 @@ public class ExpandedListFragment extends ListFragment {
     public interface ExpandedListFragmentInterface{
         void itemClicked();
         void profileClicked();
+        void searchClicked(ArrayList<User> _savedCards);
+
     }
 
     @Override
@@ -140,6 +142,12 @@ public class ExpandedListFragment extends ListFragment {
             if(mInterface != null){
                 mInterface.profileClicked();
             }
+        } else if(item.getItemId() == R.id.homescreen_search){
+
+            if(mInterface != null){
+                mInterface.searchClicked(mSavedCards);
+            }
+
         }
         return true;
     }
