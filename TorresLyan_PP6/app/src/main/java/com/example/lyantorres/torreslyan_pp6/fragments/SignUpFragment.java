@@ -147,12 +147,10 @@ public class SignUpFragment extends android.support.v4.app.Fragment {
 
         if(_isValid){
             _editText.setTextColor(getResources().getColor(R.color.green, getActivity().getTheme()));
-            _editText.setHighlightColor(getResources().getColor(R.color.green, getActivity().getTheme()));
             _imageView.setVisibility(View.VISIBLE);
             _imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_green_24dp));
         } else {
             _editText.setTextColor(getResources().getColor(R.color.red, getActivity().getTheme()));
-            _editText.setHighlightColor(getResources().getColor(R.color.red, getActivity().getTheme()));
             _imageView.setVisibility(View.VISIBLE);
             _imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear_red_24dp));
         }

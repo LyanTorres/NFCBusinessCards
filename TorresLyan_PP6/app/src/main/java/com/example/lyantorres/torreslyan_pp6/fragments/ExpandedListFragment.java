@@ -122,6 +122,7 @@ public class ExpandedListFragment extends ListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.home_screen_menu, menu);
 
+
         SearchManager searchManager =
                 (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
