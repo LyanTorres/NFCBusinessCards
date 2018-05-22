@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,19 +93,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.list_item, null);
         }
 
-        ImageButton ib = convertView.findViewById(R.id.list_item_imageButton);
+        ImageView iv = convertView.findViewById(R.id.list_imageView_card);
 
-        //Picasso.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).into(ib);
 
-        Picasso.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).fit().placeholder(R.drawable.app_logo).into(ib);
+        Picasso.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).fit().placeholder(R.drawable.image_placeholder).into(iv);
 
-        Toast.makeText(mContext, "Reading in: " + mSavedCards.get(groupPosition).getSmallCard(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "Reading in: " + mSavedCards.get(groupPosition).getSmallCard(), Toast.LENGTH_SHORT).show();
 
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }

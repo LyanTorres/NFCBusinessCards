@@ -174,8 +174,9 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                             userPhone.setText("Phone: " +mUser.getPhoneNumber());
                             userEmail.setText("Email: " +mUser.getContactEmail());
 
-                            Picasso.with(getContext()).load(mUser.getSmallCard()).fit().placeholder(R.drawable.app_logo).into(userSmall);
-                            Picasso.with(getContext()).load(mUser.getLargeCard()).fit().placeholder(R.drawable.app_logo).into(userLarge);
+                            Picasso.with(getContext()).load(mUser.getSmallCard()).fit().placeholder(R.drawable.image_placeholder).into(userSmall);
+                            Picasso.with(getContext()).load(mUser.getLargeCard()).fit().placeholder(R.drawable.image_placeholder
+                            ).into(userLarge);
                         } else {
                             contactInfo.setVisibility(View.INVISIBLE);
                             emptyInfo.setVisibility(View.VISIBLE);

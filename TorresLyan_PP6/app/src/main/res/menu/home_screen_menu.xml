@@ -2,11 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<item
-    android:title="@string/profile"
-    android:id="@+id/homescreen_profile"
-    app:showAsAction="always"
-    android:icon="@drawable/ic_person_black_24dp">
-</item>
+    <item
+        android:title="@string/search"
+        android:id="@+id/homescreen_search"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_search_black_24dp">
+    </item>
+
+    <item
+        android:title="@string/profile"
+        android:id="@+id/homescreen_profile"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_person_black_24dp">
+    </item>
 
 </menu>

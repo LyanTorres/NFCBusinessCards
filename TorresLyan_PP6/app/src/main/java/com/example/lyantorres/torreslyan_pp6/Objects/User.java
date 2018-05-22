@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class User implements Serializable{
 
+    private String UUID;
     public String name;
     private String jobTitle;
     private String phoneNumber;
@@ -67,30 +68,8 @@ public class User implements Serializable{
 
     }
 
-    public JSONArray getSavedCardsArray(String[] _array){
 
-        JSONArray cards = new JSONArray();
-
-        for (String card : _array) {
-            cards.put(card);
-        }
-
-        return cards;
-
-    }
-
-    public ArrayList<String> convertSavedCardsJson(JSONArray _jsonArray) throws JSONException {
-
-        ArrayList<String> cards = new ArrayList<>();
-
-        for(int i = 0; i < _jsonArray.length(); i ++) {
-            cards.add(String.valueOf(_jsonArray.getInt(i)));
-        }
-
-        return cards;
-    }
-
-    public void setUserInfo(String _name, String _jobTitle, String _phone, String _email, String _smallCard, String _largeCard){
+    public void setUserInfo( String _name, String _jobTitle, String _phone, String _email, String _smallCard, String _largeCard){
         name = _name;
         jobTitle = _jobTitle;
         phoneNumber = _phone;
@@ -121,5 +100,13 @@ public class User implements Serializable{
 
     public String getLargeCard() {
         return largeCard;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    public String getUUID() {
+        return UUID;
     }
 }

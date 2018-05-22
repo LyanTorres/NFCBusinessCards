@@ -29,8 +29,8 @@ import java.util.ArrayList;
 
 public class HomeScreenActivity extends AppCompatActivity implements ExpandedListFragment.ExpandedListFragmentInterface{
 
-    private NfcAdapter mNfcAdapter;
     private FirebaseAuth mAuth;
+    private NfcAdapter mNfcAdapter;
     private Tag mDetectedTag;
     private IntentFilter[] mReadTagFilters;
     private PendingIntent mPendingIntent;
@@ -124,7 +124,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 if(!mSavedCardsStrings.contains(result)) {
                     mSavedCardsStrings.add(result);
                     saveToDatabase();
-                    Toast.makeText(this, "You have added: "+ result, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "New card has been added", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Toast.makeText(this, "You have already saved this contact", Toast.LENGTH_SHORT).show();
@@ -175,9 +175,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 mSavedCardsStrings = new ArrayList<>();
 
                 if (savedCards != null) {
-
                     mSavedCardsStrings = savedCards;
-                    Log.i("=== LYAN ===", "========== \n onDataChange: ARRAY SIZE: "+mSavedCardsStrings.size()+" \n ==========");
 
                 }
 

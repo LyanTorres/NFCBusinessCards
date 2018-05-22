@@ -1,6 +1,7 @@
 package com.example.lyantorres.torreslyan_pp6.fragments;
 
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -12,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
 import com.example.lyantorres.torreslyan_pp6.Objects.ExpandableListAdapter;
@@ -96,14 +99,9 @@ public class ExpandedListFragment extends ListFragment {
                     GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
                     ArrayList<String> savedCards = dataSnapshot.getValue(t);
 
-                    mSavedCardsUUID.clear();
-                    mSavedCards.clear();
-
                     if (savedCards != null) {
-
+                        mSavedCardsUUID.clear();
                         mSavedCardsUUID = savedCards;
-                        Log.i("=== LYAN ===", "========== \n onDataChange: ARRAY SIZE: "+mSavedCardsUUID.size()+" \n ==========");
-
                     }
 
                     getSavedCardsData();
@@ -123,6 +121,14 @@ public class ExpandedListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.home_screen_menu, menu);
+
+        SearchManager searchManager =
+                (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.homescreen_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getActivity().getComponentName()));
+
     }
 
     @Override
@@ -131,8 +137,6 @@ public class ExpandedListFragment extends ListFragment {
         if(item.getItemId() == R.id.homescreen_profile){
 
             if(mInterface != null){
-                mSavedCards.clear();
-                mSavedCardsUUID.clear();
                 mInterface.profileClicked();
             }
         }
@@ -147,6 +151,7 @@ public class ExpandedListFragment extends ListFragment {
             DatabaseReference userReference = database.getReference(mSavedCardsUUID.get(i));
             DatabaseReference userInfo= userReference.child(DatabaseHelper.CONTACTINFO_REF);
 
+            final int index = i;
             userInfo.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -158,6 +163,7 @@ public class ExpandedListFragment extends ListFragment {
 
                             if (userJson != null) {
                                 User newUser = new User();
+                                newUser.setUUID(mSavedCardsUUID.get(index));
                                 newUser.readInJson(userJson);
 
                                 if(!mSavedCards.contains(newUser)) {
@@ -185,10 +191,35 @@ public class ExpandedListFragment extends ListFragment {
 
     private void updateUI(){
 
+        checkForDuplicatesInSavedCards();
+
         if (getActivity() != null){
             ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), mSavedCards);
             ExpandableListView lv = getActivity().findViewById(android.R.id.list);
             lv.setAdapter(adapter);
+            lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                    // TODO: child has been clicked. There's only ever one so there shouldn't be any issues
+
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void checkForDuplicatesInSavedCards(){
+        for (int i = 0; i < mSavedCards.size(); i ++){
+
+            for (int k = 0; k < mSavedCards.size(); k ++){
+
+                if(i != k) {
+                    if (mSavedCards.get(i).getUUID().equals(mSavedCards.get(k).getUUID())){
+                        mSavedCards.remove(i);
+                    }
+                }
+            }
         }
     }
 }
