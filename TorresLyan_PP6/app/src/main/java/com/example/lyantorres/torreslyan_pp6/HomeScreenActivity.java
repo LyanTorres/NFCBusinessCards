@@ -120,7 +120,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                     if(mSavedCardsStrings.get(i).equals(data.getStringExtra("UUID"))){
                         mSavedCardsStrings.remove(i);
                         saveToDatabase();
-
+                        Toast.makeText(this, "Card was deleted", Toast.LENGTH_SHORT).show();
                         getSupportFragmentManager().beginTransaction().replace(R.id.homescreen_frame, ExpandedListFragment.newInstance()).commit();
                     }
                 }

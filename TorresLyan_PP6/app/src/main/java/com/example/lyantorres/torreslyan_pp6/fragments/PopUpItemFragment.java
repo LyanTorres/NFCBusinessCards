@@ -1,7 +1,9 @@
 package com.example.lyantorres.torreslyan_pp6.fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -106,9 +108,26 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
 
         } else if(v.getId() == R.id.detail_button_delete){
 
-            if(mInterface != null){
-                mInterface.deleteWasPressed(mUser.getUUID());
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Delete this card");
+            builder.setMessage("Are you sure you want to delete "+ mUser.getName()+ " forever?");
+            builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(mInterface != null){
+                        mInterface.deleteWasPressed(mUser.getUUID());
+                    }
+                }
+            });
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // don't do anything
+                }
+            });
+
+            builder.setIcon(R.drawable.ic_delete_black_24dp);
+            builder.show();
 
         }
 
