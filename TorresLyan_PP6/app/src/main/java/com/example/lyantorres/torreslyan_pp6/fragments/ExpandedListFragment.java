@@ -14,8 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
@@ -35,6 +40,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ExpandedListFragment extends ListFragment {
 
@@ -42,6 +49,7 @@ public class ExpandedListFragment extends ListFragment {
     private ExpandedListFragmentInterface mInterface;
     private ArrayList<String> mSavedCardsUUID = new ArrayList<>();
     private final ArrayList<User> mSavedCards = new ArrayList<>();
+    private int mSpinnerItem = 0;
 
     public ExpandedListFragment() {
         // Required empty public constructor
@@ -91,6 +99,8 @@ public class ExpandedListFragment extends ListFragment {
 
         if (currentUser != null) {
 
+            setUpSpinner();
+
             FirebaseDatabase database = FirebaseDatabase.getInstance();
 
             DatabaseReference userReference = database.getReference(currentUser.getUid());
@@ -109,7 +119,7 @@ public class ExpandedListFragment extends ListFragment {
                     }
 
                     getSavedCardsData();
-                    updateUI(mSavedCards);
+                    spinnerChanged();
                 }
 
                 @Override
@@ -175,12 +185,6 @@ public class ExpandedListFragment extends ListFragment {
             if(mInterface != null){
                 mInterface.profileClicked();
             }
-        } else if(item.getItemId() == R.id.homescreen_search){
-
-            if(mInterface != null){
-                mInterface.searchClicked(mSavedCards);
-            }
-
         }
         return true;
     }
@@ -217,8 +221,7 @@ public class ExpandedListFragment extends ListFragment {
                             e.printStackTrace();
                         }
                     }
-
-                    updateUI(mSavedCards);
+                    spinnerChanged();
                 }
 
                 @Override
@@ -227,7 +230,7 @@ public class ExpandedListFragment extends ListFragment {
                 }
             });
 
-            updateUI(mSavedCards);
+            spinnerChanged();
         }
     }
 
@@ -236,6 +239,7 @@ public class ExpandedListFragment extends ListFragment {
         checkForDuplicatesInSavedCards();
 
         if (getActivity() != null){
+
             ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), _savedCards);
             ExpandableListView lv = getActivity().findViewById(android.R.id.list);
             lv.setAdapter(adapter);
@@ -264,4 +268,50 @@ public class ExpandedListFragment extends ListFragment {
             }
         }
     }
+
+    private void spinnerChanged(){
+        if(mSpinnerItem == 0){
+            Collections.sort(mSavedCards, new Comparator<User>() {
+                @Override
+                public int compare(User user1, User user2) {
+                    return user1.getName().compareTo(user2.getName());
+                }
+            });
+        } else {
+
+            Collections.sort(mSavedCards, new Comparator<User>() {
+                @Override
+                public int compare(User user1, User user2) {
+                    return user1.getJobTitle().compareTo(user2.getJobTitle());
+                }
+            });
+        }
+
+        // since the list has now been sorted update the UI
+        updateUI(mSavedCards);
+    }
+
+    private void setUpSpinner(){
+
+        if (getActivity()!= null) {
+            Spinner spinner = getActivity().findViewById(R.id.sort_by_spinner);
+            String[] values = getActivity().getResources().getStringArray(R.array.spinner_values);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,values);
+            spinner.setAdapter(adapter);
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mSpinnerItem = position;
+                    spinnerChanged();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
+    }
+
+
 }

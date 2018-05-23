@@ -23,9 +23,15 @@
     <string name="save">Save</string>
     <string name="at_a_glance_card">Https://at_a_glance_card.com</string>
     <string name="detailed_card">Https://detailed_card.com</string>
+
+    <!-- HOME -->
     <string name="search">search</string>
     <string name="search_cards">Search cards</string>
+    <string-array name= "spinner_values">
+        <item>Sort by name</item>
+        <item>Sort by job title</item>
+    </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
