@@ -1,11 +1,18 @@
 package com.example.lyantorres.torreslyan_pp6;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.lyantorres.torreslyan_pp6.Objects.User;
+import com.example.lyantorres.torreslyan_pp6.fragments.PopUpItemFragment;
 
 public class PopUpItemActivity extends AppCompatActivity {
 
@@ -14,10 +21,19 @@ public class PopUpItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_up_item);
         setUpPopUpWindow();
+
+        Intent intent = getIntent();
+
+        if(intent != null && intent.hasExtra("USER")) {
+
+            User user = (User) intent.getSerializableExtra("USER");
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.popUp_frame, PopUpItemFragment.newInstance(user)).commit();
+        }
+
     }
 
     private void setUpPopUpWindow(){
-
 
         // making this activity smaller according to the device measurements
         DisplayMetrics dm = new DisplayMetrics();
@@ -37,4 +53,5 @@ public class PopUpItemActivity extends AppCompatActivity {
         getWindow().setAttributes(parameters);
 
     }
+
 }

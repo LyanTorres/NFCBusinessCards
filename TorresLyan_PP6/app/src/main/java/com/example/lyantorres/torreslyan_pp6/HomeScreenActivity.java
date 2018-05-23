@@ -11,7 +11,6 @@ import android.nfc.tech.Ndef;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
@@ -37,7 +36,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     private PendingIntent mPendingIntent;
     private ArrayList<String> mSavedCardsStrings = new ArrayList<>();
 
-    public String mUSER_EXRTA = "USER";
+    public String mUSER_EXTRA = "USER";
     public int mPOPUP_REQUEST_CODE = 101;
 
     @Override
@@ -193,7 +192,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     public void itemClicked(User _user) {
 
         Intent popUpIntent = new Intent(this, PopUpItemActivity.class);
-        popUpIntent.putExtra(mUSER_EXRTA, _user);
+        popUpIntent.putExtra(mUSER_EXTRA, _user);
         startActivityForResult(popUpIntent, mPOPUP_REQUEST_CODE);
 
     }
