@@ -50,6 +50,8 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
         mAuth = FirebaseAuth.getInstance();
 
+        getData();
+
         // Setting up the NFC handling
         mPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
                 new Intent(this,getClass()).
@@ -59,23 +61,26 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         IntentFilter filter2     = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
         mReadTagFilters = new IntentFilter[]{tagDetected,filter2};
 
+        // ADD LOADING PAGE
+
+
+        // ========== NOTE: adding a new user from outside of app overwrites their existing saved cards so im deacivated it for now ==========
 
         // this handles when an NFC is used to open the application
-        if(getIntent() != null){
-            if(getIntent().getAction() != null){
-
-                if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
-                    mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
-                    setIntent(getIntent());
-                    readTag(getIntent());
-                }
-            }
-        }
-
-        getData();
+//        if(getIntent() != null){
+//            if(getIntent().getAction() != null){
+//
+//                if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+//                    mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+//
+//                    setIntent(getIntent());
+//                    readTag(getIntent());
+//                }
+//            }
+//        }
 
     }
+
 
     // ===================================== NFC HANDLING =====================================
 
@@ -190,7 +195,6 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     public void profileClicked() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
-        mNfcAdapter.disableReaderMode(this);
     }
 
     @Override

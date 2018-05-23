@@ -296,7 +296,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
     private void updateFeedback(EditText _editText, ImageView _imageView, Boolean _isValid){
 
         if(_isValid){
-            _editText.setTextColor(getResources().getColor(R.color.green, getActivity().getTheme()));
+            _editText.setTextColor(getResources().getColor(R.color.black));
             _imageView.setVisibility(View.VISIBLE);
             _imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_green_24dp));
         } else {
@@ -308,7 +308,10 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
     private Boolean isValid(EditText _editText){
 
-        return _editText.getCurrentTextColor() == getResources().getColor(R.color.green);
+        if(_editText.getCurrentTextColor() != getResources().getColor(R.color.red)){
+            return true;
+        }
+        return false;
 
     }
 }

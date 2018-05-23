@@ -43,7 +43,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
         mNfcPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        disableTagWriteMode();
 
         mAuth = FirebaseAuth.getInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.profile_frame, ProfilePreviewFragment.newInstance()).commit();
