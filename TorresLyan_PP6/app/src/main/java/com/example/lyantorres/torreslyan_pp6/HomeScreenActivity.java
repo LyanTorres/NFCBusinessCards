@@ -199,9 +199,9 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     @Override
     public void searchClicked(ArrayList<User> _savedCards) {
-        Intent searchIntent = new Intent();
-        searchIntent.setAction(Intent.ACTION_SEARCH);
-        startActivityForResult(searchIntent, 101);
+//        Intent searchIntent = new Intent();
+//        searchIntent.setAction(Intent.ACTION_SEARCH);
+//        startActivityForResult(searchIntent, 101);
     }
 
 

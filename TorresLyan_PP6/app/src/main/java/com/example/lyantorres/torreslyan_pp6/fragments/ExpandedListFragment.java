@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -107,7 +109,7 @@ public class ExpandedListFragment extends ListFragment {
                     }
 
                     getSavedCardsData();
-                    updateUI();
+                    updateUI(mSavedCards);
                 }
 
                 @Override
@@ -131,6 +133,37 @@ public class ExpandedListFragment extends ListFragment {
                 (SearchView) menu.findItem(R.id.homescreen_search).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+        // modify the item's being displayed by the user
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if(newText.isEmpty()){
+                    updateUI(mSavedCards);
+
+                } else {
+
+                    ArrayList<User> filteredCards = new ArrayList<>();
+
+                    for(int i = 0; i < mSavedCards.size(); i ++){
+
+                        // make sure that everything is lower case so that doesn't become an issue when the user is trying to search through their cards
+                        if(mSavedCards.get(i).getName().toLowerCase().contains(newText.toLowerCase())){
+                            filteredCards.add(mSavedCards.get(i));
+                        }
+                    }
+
+                    updateUI(filteredCards);
+                }
+                return true;
+            }
+        });
 
     }
 
@@ -185,7 +218,7 @@ public class ExpandedListFragment extends ListFragment {
                         }
                     }
 
-                    updateUI();
+                    updateUI(mSavedCards);
                 }
 
                 @Override
@@ -194,16 +227,16 @@ public class ExpandedListFragment extends ListFragment {
                 }
             });
 
-            updateUI();
+            updateUI(mSavedCards);
         }
     }
 
-    private void updateUI(){
+    private void updateUI(ArrayList<User> _savedCards){
 
         checkForDuplicatesInSavedCards();
 
         if (getActivity() != null){
-            ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), mSavedCards);
+            ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), _savedCards);
             ExpandableListView lv = getActivity().findViewById(android.R.id.list);
             lv.setAdapter(adapter);
             lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
