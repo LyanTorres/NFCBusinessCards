@@ -86,6 +86,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     // ===================================== NFC HANDLING =====================================
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -103,6 +104,29 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 setIntent(intent);
                 readTag(getIntent());
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == mPOPUP_REQUEST_CODE){
+
+            if(data.hasExtra("UUID")){
+
+                for(int i = 0; i < mSavedCardsStrings.size(); i ++){
+
+                    if(mSavedCardsStrings.get(i).equals(data.getStringExtra("UUID"))){
+                        mSavedCardsStrings.remove(i);
+                        saveToDatabase();
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.homescreen_frame, ExpandedListFragment.newInstance()).commit();
+                    }
+                }
+
+            }
+
         }
     }
 

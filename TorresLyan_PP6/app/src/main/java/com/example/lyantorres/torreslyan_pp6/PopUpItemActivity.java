@@ -14,7 +14,9 @@ import android.view.WindowManager;
 import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.fragments.PopUpItemFragment;
 
-public class PopUpItemActivity extends AppCompatActivity {
+public class PopUpItemActivity extends AppCompatActivity implements PopUpItemFragment.PopUpFragmentInterface {
+
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,9 @@ public class PopUpItemActivity extends AppCompatActivity {
 
         if(intent != null && intent.hasExtra("USER")) {
 
-            User user = (User) intent.getSerializableExtra("USER");
+            mUser = (User) intent.getSerializableExtra("USER");
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.popUp_frame, PopUpItemFragment.newInstance(user)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.popUp_frame, PopUpItemFragment.newInstance(mUser)).commit();
         }
 
     }
@@ -54,4 +56,11 @@ public class PopUpItemActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void deleteWasPressed(String _UUID) {
+        Intent intent = new Intent();
+        intent.putExtra("UUID", mUser.getUUID());
+        setResult(101, intent);
+        finish();
+    }
 }

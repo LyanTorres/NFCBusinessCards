@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,8 +45,6 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
 
     public interface PopUpFragmentInterface{
         void deleteWasPressed(String _UUID);
-        void callWasPressed(String _phone);
-        void emailWasPressed(String _email);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
 
         if(getActivity() != null){
 
@@ -76,9 +75,11 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
 
                 ImageButton phone = getActivity().findViewById(R.id.detail_phone);
                 ImageButton email = getActivity().findViewById(R.id.detail_email);
+                Button delete = getActivity().findViewById(R.id.detail_button_delete);
 
                 phone.setOnClickListener(this);
                 email.setOnClickListener(this);
+                delete.setOnClickListener(this);
             }
         }
     }
@@ -102,6 +103,13 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
 
 
             startActivity(Intent.createChooser(emailIntent, "Send mail"));
+
+        } else if(v.getId() == R.id.detail_button_delete){
+
+            if(mInterface != null){
+                mInterface.deleteWasPressed(mUser.getUUID());
+            }
+
         }
 
     }
@@ -110,25 +118,25 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_pop_up_item, container, false);
     }
 
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.delete_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(item.getItemId() == R.id.details_delete){
-
-
-        }
-        return true;
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.delete_menu, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        if(item.getItemId() == R.id.details_delete){
+//
+//
+//        }
+//        return true;
+//    }
 }
