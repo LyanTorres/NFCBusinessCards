@@ -27,11 +27,10 @@
     <!-- HOME -->
     <string name="search">search</string>
     <string name="search_cards">Search cards</string>
-    <string-array name= "spinner_values">
+    <string-array name="spinner_values">
         <item>Sort by name</item>
         <item>Sort by job title</item>
     </string-array>
-
 
 
 </resources>

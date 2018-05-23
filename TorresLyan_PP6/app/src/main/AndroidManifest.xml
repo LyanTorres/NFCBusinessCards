@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeScreenActivity"
+        <activity
+            android:name=".HomeScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -41,13 +43,18 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/search" />
         </activity>
-        <activity android:name=".ProfileActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".SearchResultsActivity"
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchResultsActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+        </activity>
+        <activity android:name=".PopUpItemActivity"
+            android:theme="@style/AppTheme.CustomPopUpTheme">
         </activity>
     </application>
 

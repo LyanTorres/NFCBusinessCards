@@ -83,9 +83,8 @@ public class ExpandedListFragment extends ListFragment {
     }
 
     public interface ExpandedListFragmentInterface{
-        void itemClicked();
+        void itemClicked(User _user);
         void profileClicked();
-        void searchClicked(ArrayList<User> _savedCards);
 
     }
 
@@ -247,7 +246,9 @@ public class ExpandedListFragment extends ListFragment {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                    // TODO: child has been clicked. There's only ever one so there shouldn't be any issues
+                    if(mInterface != null){
+                        mInterface.itemClicked(mSavedCards.get(groupPosition));
+                    }
 
                     return true;
                 }

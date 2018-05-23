@@ -37,6 +37,9 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     private PendingIntent mPendingIntent;
     private ArrayList<String> mSavedCardsStrings = new ArrayList<>();
 
+    public String mUSER_EXRTA = "USER";
+    public int mPOPUP_REQUEST_CODE = 101;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,7 +190,11 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     // ===================================== EXPANDABLE LIST FRAGMENT INTERFACE CALLBACKS =====================================
 
     @Override
-    public void itemClicked() {
+    public void itemClicked(User _user) {
+
+        Intent popUpIntent = new Intent(this, PopUpItemActivity.class);
+        popUpIntent.putExtra(mUSER_EXRTA, _user);
+        startActivityForResult(popUpIntent, mPOPUP_REQUEST_CODE);
 
     }
 
@@ -195,13 +202,6 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     public void profileClicked() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void searchClicked(ArrayList<User> _savedCards) {
-//        Intent searchIntent = new Intent();
-//        searchIntent.setAction(Intent.ACTION_SEARCH);
-//        startActivityForResult(searchIntent, 101);
     }
 
 
