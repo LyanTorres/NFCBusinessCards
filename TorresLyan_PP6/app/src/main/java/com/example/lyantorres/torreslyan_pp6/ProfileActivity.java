@@ -170,9 +170,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
 
     @Override
     public void signOutWasClicked() {
-        Intent intent  = new Intent(this, MainActivity.class);
-        intent.setAction("SIGNOUT");
-        startActivity(intent);
+        Intent intent = new Intent();
+        setResult(200, intent);
         finish();
     }
 

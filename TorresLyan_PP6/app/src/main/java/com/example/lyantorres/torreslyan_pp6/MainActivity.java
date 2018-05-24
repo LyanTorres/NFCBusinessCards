@@ -39,18 +39,17 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
             if(getIntent() != null) {
 
-                // But if they signed out then let them sign in/ up if they want to
-                if(!getIntent().getAction().equals("SIGNOUT")) {
+                if(getIntent().getAction() == "SIGNOUT"){
+                    mAuth.signOut();
+                } else {
 
                     // they are signed in so don't make them sign in again
                     Intent intent = new Intent(this, HomeScreenActivity.class);
                     startActivity(intent);
 
                     finish();
-                } else {
-
-                    mAuth.signOut();
                 }
+
             }
         }
 

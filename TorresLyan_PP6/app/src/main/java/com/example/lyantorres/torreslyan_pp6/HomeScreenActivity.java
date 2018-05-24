@@ -157,7 +157,11 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 }
 
             }
-
+        } else if(resultCode == 200){
+            Intent intent  = new Intent(this, MainActivity.class);
+            intent.setAction("SIGNOUT");
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -303,7 +307,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     @Override
     public void profileClicked() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 200);
     }
 
 
