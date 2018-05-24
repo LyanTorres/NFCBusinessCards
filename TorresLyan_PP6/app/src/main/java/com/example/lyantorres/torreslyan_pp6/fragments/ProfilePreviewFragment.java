@@ -22,6 +22,8 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -191,6 +193,8 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                     TextView userEmail = getActivity().findViewById(R.id.profile_email);
                     ImageView userSmall = getActivity().findViewById(R.id.small_card_IV);
                     WebView webView = getActivity().findViewById(R.id.large_card_WV);
+                    final ScrollView sv = getActivity().findViewById(R.id.profile_scrollView);
+                    final ProgressBar pb = getActivity().findViewById(R.id.profile_progressBar);
 
 
                     if(emptyInfo != null && contactInfo !=null) {
@@ -204,10 +208,27 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                             userJob.setText("Job title: " + mUser.getJobTitle());
                             userPhone.setText("Phone: " + mUser.getPhoneNumber());
                             userEmail.setText("Email: " + mUser.getContactEmail());
+                            sv.setVisibility(View.INVISIBLE);
 
 
                             if (isNetworkAvailable()) {
-                                Picasso.with(getContext()).load(mUser.getSmallCard()).fit().placeholder(R.drawable.image_placeholder).into(userSmall);
+
+                                Picasso.with(getContext())
+                                        .load(mUser.getSmallCard())
+                                        .into(userSmall, new com.squareup.picasso.Callback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                sv.setVisibility(View.VISIBLE);
+                                                pb.setVisibility(View.GONE);
+                                            }
+
+                                            @Override
+                                            public void onError() {
+                                                sv.setVisibility(View.VISIBLE);
+                                                pb.setVisibility(View.GONE);
+                                                Toast.makeText(getContext(), "Something went wrong loading in your cards", Toast.LENGTH_SHORT);
+                                            }
+                                        });
 
                                 webView.getSettings().setJavaScriptEnabled(true);
                                 webView.getSettings().setSupportZoom(true);
