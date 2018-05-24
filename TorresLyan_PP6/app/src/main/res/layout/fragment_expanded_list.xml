@@ -24,7 +24,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sort_by_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/sort_by_spinner"
+        android:background="@drawable/bg"/>
 
     <Spinner
         android:id="@+id/sort_by_spinner"

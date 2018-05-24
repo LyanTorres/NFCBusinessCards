@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
         mAuth = FirebaseAuth.getInstance();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, SignInFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.main_frame, SignInFragment.newInstance()).commit();
     }
 
     @Override
@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
                     startActivity(intent);
 
                     finish();
+                } else {
+
+                    mAuth.signOut();
                 }
             }
         }
@@ -82,8 +85,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
     @Override
     public void signUpWasPressed() {
-        //TODO: ===================================== ADD CUSTOM ANIMATIONS =====================================
-        getSupportFragmentManager().beginTransaction().addToBackStack("signUp").replace(R.id.main_frame, SignUpFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().addToBackStack("signUp").setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.main_frame, SignUpFragment.newInstance()).commit();
     }
 
 
