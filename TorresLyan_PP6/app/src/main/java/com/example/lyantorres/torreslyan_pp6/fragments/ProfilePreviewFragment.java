@@ -200,7 +200,7 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                     if(emptyInfo != null && contactInfo !=null) {
 
                         if (mUser.name != null) {
-
+                            pb.setVisibility(View.VISIBLE);
                             contactInfo.setVisibility(View.VISIBLE);
                             emptyInfo.setVisibility(View.INVISIBLE);
 
@@ -260,6 +260,7 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                             } else {
                                 contactInfo.setVisibility(View.INVISIBLE);
                                 emptyInfo.setVisibility(View.VISIBLE);
+                                pb.setVisibility(View.GONE);
 
                             }
                     }
