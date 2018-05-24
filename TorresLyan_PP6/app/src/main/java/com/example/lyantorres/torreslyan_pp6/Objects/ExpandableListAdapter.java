@@ -87,17 +87,33 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item, null);
         }
 
+        final ProgressBar pb = convertView.findViewById(R.id.list_item_progress);
         ImageView iv = convertView.findViewById(R.id.list_imageView_card);
 
-        //Glide.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).into(iv);
-        Picasso.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).fit().placeholder(R.drawable.image_placeholder).into(iv);
+        pb.setIndeterminate(true);
+        pb.setVisibility(View.VISIBLE);
+
+        Picasso.with(mContext)
+                .load(mSavedCards.get(groupPosition).getSmallCard())
+                .into(iv, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        pb.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        pb.setVisibility(View.GONE);
+                        Toast.makeText(mContext, "Something went wrong with "+mSavedCards.get(groupPosition).getName()+"'s Card", Toast.LENGTH_SHORT);
+                    }
+                });
 
         //Toast.makeText(mContext, "Reading in: " + mSavedCards.get(groupPosition).getSmallCard(), Toast.LENGTH_SHORT).show();
 
