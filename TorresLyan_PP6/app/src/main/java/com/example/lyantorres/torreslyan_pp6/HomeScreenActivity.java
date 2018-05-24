@@ -1,6 +1,7 @@
 package com.example.lyantorres.torreslyan_pp6;
 
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -36,6 +37,8 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     private PendingIntent mPendingIntent;
     private ArrayList<String> mSavedCardsStrings = new ArrayList<>();
 
+    private ProgressDialog mDialog;
+
     public String mUSER_EXTRA = "USER";
     public int mPOPUP_REQUEST_CODE = 101;
 
@@ -51,6 +54,12 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         mDetectedTag =getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
         mAuth = FirebaseAuth.getInstance();
+
+        mDialog = new ProgressDialog(this);
+        mDialog.setTitle("Downloading");
+        mDialog.setMessage("Getting your saved cards");
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.show();
 
         getData();
 
@@ -69,17 +78,6 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         // ========== NOTE: adding a new user from outside of app overwrites their existing saved cards so im deacivated it for now ==========
 
         // this handles when an NFC is used to open the application
-//        if(getIntent() != null){
-//            if(getIntent().getAction() != null){
-//
-//                if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
-//                    mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-//
-//                    setIntent(getIntent());
-//                    readTag(getIntent());
-//                }
-//            }
-//        }
 
     }
 
@@ -206,6 +204,27 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        userContactInfo.setPriority(null, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                if(mDialog != null) {
+                    mDialog.dismiss();
+
+                    if(getIntent() != null){
+                        if(getIntent().getAction() != null){
+
+                            if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+                                mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                                setIntent(getIntent());
+                                readTag(getIntent());
+                            }
+                        }
+                    }
+                }
             }
         });
     }
