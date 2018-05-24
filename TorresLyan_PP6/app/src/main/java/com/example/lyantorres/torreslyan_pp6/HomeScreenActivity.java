@@ -55,37 +55,54 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
         getSupportFragmentManager().beginTransaction().replace(R.id.homescreen_frame, ExpandedListFragment.newInstance()).commit();
 
-        // making sure that the adapter knows who to talk to when reading an NFC
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        checkIfNFCIsEnabled();
-
-        mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
         mAuth = FirebaseAuth.getInstance();
 
-        mDialog = new ProgressDialog(this);
-        mDialog.setTitle("Downloading");
-        mDialog.setMessage("Getting your saved cards");
-        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mDialog.show();
+        if(mAuth != null) {
 
-        getData();
+            if(mAuth.getCurrentUser() != null) {
 
-        // Setting up the NFC handling
-        mPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
-                new Intent(this, getClass()).
-                        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+                // making sure that the adapter knows who to talk to when reading an NFC
+                mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+                checkIfNFCIsEnabled();
 
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        IntentFilter filter2 = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        mReadTagFilters = new IntentFilter[]{tagDetected, filter2};
+                mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
-        // ADD LOADING PAGE
+                mDialog = new ProgressDialog(this);
+                mDialog.setTitle("Downloading");
+                mDialog.setMessage("Getting your saved cards");
+                mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                mDialog.show();
 
 
-        // ========== NOTE: adding a new user from outside of app overwrites their existing saved cards so im deacivated it for now ==========
+                getData();
 
-        // this handles when an NFC is used to open the application
+                // Setting up the NFC handling
+                mPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
+                        new Intent(this, getClass()).
+                                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+                IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+                IntentFilter filter2 = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+                mReadTagFilters = new IntentFilter[]{tagDetected, filter2};
+            } else {
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle("Not Signed in");
+                dialog.setMessage("You have to be signed in to add a card");
+                dialog.setPositiveButton("GO TO SIGN IN", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent signInIntent = new Intent(HomeScreenActivity.this, MainActivity.class);
+                        startActivity(signInIntent);
+                        finish();
+                    }
+                });
+
+                dialog.show();
+            }
+
+        }
+
 
     }
 
@@ -121,7 +138,9 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     @Override
     protected void onResume() {
         super.onResume();
-        mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mReadTagFilters, null);
+        if(mNfcAdapter != null) {
+            mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mReadTagFilters, null);
+        }
     }
 
     @Override
