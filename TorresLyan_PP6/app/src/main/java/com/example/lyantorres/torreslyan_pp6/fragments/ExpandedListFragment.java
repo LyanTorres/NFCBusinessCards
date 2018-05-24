@@ -50,6 +50,7 @@ public class ExpandedListFragment extends ListFragment {
     private ArrayList<String> mSavedCardsUUID = new ArrayList<>();
     private final ArrayList<User> mSavedCards = new ArrayList<>();
     private int mSpinnerItem = 0;
+    private ArrayList<User> mListToDisplay = new ArrayList<>();
 
     public ExpandedListFragment() {
         // Required empty public constructor
@@ -154,7 +155,8 @@ public class ExpandedListFragment extends ListFragment {
             public boolean onQueryTextChange(String newText) {
 
                 if(newText.isEmpty()){
-                    updateUI(mSavedCards);
+                    mListToDisplay = mSavedCards;
+                    updateUI();
 
                 } else {
 
@@ -168,7 +170,8 @@ public class ExpandedListFragment extends ListFragment {
                         }
                     }
 
-                    updateUI(filteredCards);
+                    mListToDisplay = filteredCards;
+                    updateUI();
                 }
                 return true;
             }
@@ -185,6 +188,7 @@ public class ExpandedListFragment extends ListFragment {
                 mInterface.profileClicked();
             }
         }
+
         return true;
     }
 
@@ -233,13 +237,13 @@ public class ExpandedListFragment extends ListFragment {
         }
     }
 
-    private void updateUI(ArrayList<User> _savedCards){
+    private void updateUI(){
 
         checkForDuplicatesInSavedCards();
 
         if (getActivity() != null){
 
-            ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), _savedCards);
+            ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), mListToDisplay);
             ExpandableListView lv = getActivity().findViewById(android.R.id.list);
             lv.setAdapter(adapter);
             lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -247,7 +251,7 @@ public class ExpandedListFragment extends ListFragment {
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
                     if(mInterface != null){
-                        mInterface.itemClicked(mSavedCards.get(groupPosition));
+                        mInterface.itemClicked(mListToDisplay.get(groupPosition));
                     }
 
                     return true;
@@ -288,8 +292,9 @@ public class ExpandedListFragment extends ListFragment {
             });
         }
 
+        mListToDisplay = mSavedCards;
         // since the list has now been sorted update the UI
-        updateUI(mSavedCards);
+        updateUI();
     }
 
     private void setUpSpinner(){

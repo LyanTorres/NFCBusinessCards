@@ -1,15 +1,24 @@
 package com.example.lyantorres.torreslyan_pp6.fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -97,7 +106,7 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
 
             FirebaseUser currentUser = mAuth.getCurrentUser();
 
-            if(currentUser != null){
+            if(currentUser != null) {
 
                 mUser = new User();
 
@@ -107,42 +116,64 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                 emptyTV.setVisibility(View.INVISIBLE);
                 info.setVisibility(View.VISIBLE);
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                DatabaseReference userReference = database.getReference(currentUser.getUid());
-                DatabaseReference userContactInfo = userReference.child(DatabaseHelper.CONTACTINFO_REF);
+                    DatabaseReference userReference = database.getReference(currentUser.getUid());
+                    DatabaseReference userContactInfo = userReference.child(DatabaseHelper.CONTACTINFO_REF);
 
-                userContactInfo.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String userData = dataSnapshot.getValue(String.class);
+                    userContactInfo.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String userData = dataSnapshot.getValue(String.class);
 
-                        if(userData != null) {
-                            try {
-                                JSONObject userJson = new JSONObject(userData);
+                            if (userData != null) {
+                                try {
+                                    JSONObject userJson = new JSONObject(userData);
 
-                                if (userJson != null) {
-                                    mUser.readInJson(userJson);
+                                    if (userJson != null) {
+                                        mUser.readInJson(userJson);
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+
+
+                            updateUI();
                         }
 
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                        updateUI();
-                    }
+                        }
+                    });
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                updateUI();
-            }
+                    updateUI();
+                }
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(getContext().CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        Boolean results = activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+        if(!results){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("No Internet Connection");
+            dialog.setMessage("Please check your connection and try again.");
+            dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        return results;
     }
 
     private void updateUI(){
@@ -159,7 +190,7 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                     TextView userPhone = getActivity().findViewById(R.id.profile_phone);
                     TextView userEmail = getActivity().findViewById(R.id.profile_email);
                     ImageView userSmall = getActivity().findViewById(R.id.small_card_IV);
-                    ImageView userLarge = getActivity().findViewById(R.id.large_card_IV);
+                    WebView webView = getActivity().findViewById(R.id.large_card_WV);
 
 
                     if(emptyInfo != null && contactInfo !=null) {
@@ -170,21 +201,56 @@ public class ProfilePreviewFragment extends android.support.v4.app.Fragment {
                             emptyInfo.setVisibility(View.INVISIBLE);
 
                             userName.setText("Name: " + mUser.getName());
-                            userJob.setText("Job title: " +mUser.getJobTitle());
-                            userPhone.setText("Phone: " +mUser.getPhoneNumber());
-                            userEmail.setText("Email: " +mUser.getContactEmail());
+                            userJob.setText("Job title: " + mUser.getJobTitle());
+                            userPhone.setText("Phone: " + mUser.getPhoneNumber());
+                            userEmail.setText("Email: " + mUser.getContactEmail());
 
-                            Picasso.with(getContext()).load(mUser.getSmallCard()).fit().placeholder(R.drawable.image_placeholder).into(userSmall);
-                            Picasso.with(getContext()).load(mUser.getLargeCard()).fit().placeholder(R.drawable.image_placeholder
-                            ).into(userLarge);
-                        } else {
-                            contactInfo.setVisibility(View.INVISIBLE);
-                            emptyInfo.setVisibility(View.VISIBLE);
 
-                        }
+                            if (isNetworkAvailable()) {
+                                Picasso.with(getContext()).load(mUser.getSmallCard()).fit().placeholder(R.drawable.image_placeholder).into(userSmall);
+
+                                webView.getSettings().setJavaScriptEnabled(true);
+                                webView.getSettings().setSupportZoom(true);
+
+                                webView.setWebViewClient(new WebViewClient() {
+                                    @Override
+                                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                                        return false;
+                                    }
+                                });
+
+                                WebSettings webSettings = webView.getSettings();
+                                webSettings.setJavaScriptEnabled(true);
+
+
+                                String videoId = getVideoId();
+                                DisplayMetrics dm = new DisplayMetrics();
+                                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+                                String frameVideo = "<iframe width=\"" + dm.widthPixels / 3.5 + "\" height=\"250\" src=\"https://www.youtube.com/embed/" + videoId + "\" frameborder=\"0\" allowfullscreen></iframe>";
+                                webView.loadData(frameVideo, "text/html", "utf-8");
+
+                                if (Build.VERSION.SDK_INT > 8) {
+                                    webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+                                }
+                            }
+
+
+                            } else {
+                                contactInfo.setVisibility(View.INVISIBLE);
+                                emptyInfo.setVisibility(View.VISIBLE);
+
+                            }
                     }
                 }
             }
+    }
+
+
+    private String getVideoId(){
+        String[] string = mUser.getLargeCard().split("=");
+
+        return string[string.length-1];
     }
 
     @Override

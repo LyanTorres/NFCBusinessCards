@@ -6,19 +6,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.R;
@@ -29,6 +34,11 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
 
     private static User mUser;
     private PopUpFragmentInterface mInterface;
+
+    private VideoView mVideoView;
+    private MediaController mMediacontroller;
+    private ProgressBar mProgressBar;
+    private Boolean mPaused = false;
 
     public PopUpItemFragment() {
         // Required empty public constructor
@@ -72,18 +82,53 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
                 nameTv.setText(mUser.getName());
                 jobTv.setText(mUser.getJobTitle());
 
-                //TODO: UPDATE IMAGEVIEW
-                ImageView iv = getActivity().findViewById(R.id.detail_largeCard);
-
                 ImageButton phone = getActivity().findViewById(R.id.detail_phone);
                 ImageButton email = getActivity().findViewById(R.id.detail_email);
                 Button delete = getActivity().findViewById(R.id.detail_button_delete);
+                mProgressBar = getActivity().findViewById(R.id.popup_progress);
+                mProgressBar.setVisibility(View.GONE);
 
                 phone.setOnClickListener(this);
                 email.setOnClickListener(this);
                 delete.setOnClickListener(this);
+
+                WebView webView = getActivity().findViewById(R.id.popup_wv);
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.getSettings().setSupportZoom(true);
+
+                webView.setWebViewClient(new WebViewClient(){
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        return false;
+                    }
+                });
+
+                WebSettings webSettings = webView.getSettings();
+                webSettings.setJavaScriptEnabled(true);
+
+
+                String videoId = getVideoId();
+                DisplayMetrics dm = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+                String frameVideo = "<iframe width=\""+dm.widthPixels/3.5+"\" height=\"250\" src=\"https://www.youtube.com/embed/"+videoId+"\" frameborder=\"0\" allowfullscreen></iframe>";
+                webView.loadData(frameVideo, "text/html", "utf-8");
+
+                if (Build.VERSION.SDK_INT > 8) {
+                    webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+                }
+
+
+                // load in video
+                //setUpVideoViewer();
             }
         }
+    }
+
+    private String getVideoId(){
+        String[] string = mUser.getLargeCard().split("=");
+
+        return string[string.length-1];
     }
 
 
@@ -137,25 +182,8 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_pop_up_item, container, false);
     }
 
 
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.delete_menu, menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        if(item.getItemId() == R.id.details_delete){
-//
-//
-//        }
-//        return true;
-//    }
 }

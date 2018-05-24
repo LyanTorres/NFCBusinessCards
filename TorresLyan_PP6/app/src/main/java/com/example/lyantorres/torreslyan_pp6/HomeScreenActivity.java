@@ -1,17 +1,23 @@
 package com.example.lyantorres.torreslyan_pp6;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
@@ -28,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class HomeScreenActivity extends AppCompatActivity implements ExpandedListFragment.ExpandedListFragmentInterface{
+public class HomeScreenActivity extends AppCompatActivity implements ExpandedListFragment.ExpandedListFragmentInterface {
 
     private FirebaseAuth mAuth;
     private NfcAdapter mNfcAdapter;
@@ -51,7 +57,9 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
         // making sure that the adapter knows who to talk to when reading an NFC
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        mDetectedTag =getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        checkIfNFCIsEnabled();
+
+        mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -65,12 +73,12 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
         // Setting up the NFC handling
         mPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
-                new Intent(this,getClass()).
+                new Intent(this, getClass()).
                         addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        IntentFilter filter2     = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        mReadTagFilters = new IntentFilter[]{tagDetected,filter2};
+        IntentFilter filter2 = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        mReadTagFilters = new IntentFilter[]{tagDetected, filter2};
 
         // ADD LOADING PAGE
 
@@ -85,6 +93,31 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     // ===================================== NFC HANDLING =====================================
 
 
+    private void checkIfNFCIsEnabled() {
+        if (!mNfcAdapter.isEnabled()) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("NFC not enabled");
+            builder.setMessage("Some features of this application require your NFC settings to be enabled. Please turn NFC data exchange on and try again.");
+            builder.setPositiveButton("GO TO SETTINGS", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent setNFC = new Intent(Settings.ACTION_NFC_SETTINGS);
+                    startActivity(setNFC);
+                }
+            });
+            builder.setNegativeButton("CLOSE", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            builder.setIcon(R.drawable.nfc_icon);
+            builder.show();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -95,7 +128,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if(intent != null) {
+        if (intent != null) {
             if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
                 mDetectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
@@ -109,13 +142,13 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == mPOPUP_REQUEST_CODE){
+        if (resultCode == mPOPUP_REQUEST_CODE) {
 
-            if(data.hasExtra("UUID")){
+            if (data.hasExtra("UUID")) {
 
-                for(int i = 0; i < mSavedCardsStrings.size(); i ++){
+                for (int i = 0; i < mSavedCardsStrings.size(); i++) {
 
-                    if(mSavedCardsStrings.get(i).equals(data.getStringExtra("UUID"))){
+                    if (mSavedCardsStrings.get(i).equals(data.getStringExtra("UUID"))) {
                         mSavedCardsStrings.remove(i);
                         saveToDatabase();
                         Toast.makeText(this, "Card was deleted", Toast.LENGTH_SHORT).show();
@@ -128,11 +161,11 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         }
     }
 
-    private void readTag(Intent _intent){
-        mDetectedTag =getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+    private void readTag(Intent _intent) {
+        mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
         Ndef ndef = Ndef.get(mDetectedTag);
 
-        try{
+        try {
             ndef.connect();
 
             Parcelable[] messages = _intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -147,7 +180,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 byte[] payload = record.getPayload();
                 String result = new String(payload);
 
-                if(!mSavedCardsStrings.contains(result)) {
+                if (!mSavedCardsStrings.contains(result)) {
                     mSavedCardsStrings.add(result);
                     saveToDatabase();
                     Toast.makeText(this, "New card has been added", Toast.LENGTH_SHORT).show();
@@ -160,15 +193,14 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
                 ndef.close();
 
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Cannot Read From Tag.", Toast.LENGTH_LONG).show();
         }
     }
 
     // ===================================== DATABASE  =====================================
 
-    private void saveToDatabase(){
+    private void saveToDatabase() {
 
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -180,60 +212,88 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     }
 
-    private void getData(){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private void getData() {
 
-        DatabaseReference userReference = database.getReference(currentUser.getUid());
-        DatabaseReference userContactInfo = userReference.child(DatabaseHelper.SAVEDCARDS_REF);
 
-        userContactInfo.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        if (isNetworkAvailable()) {
 
-                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
-                ArrayList<String> savedCards = dataSnapshot.getValue(t);
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                mSavedCardsStrings = new ArrayList<>();
+            DatabaseReference userReference = database.getReference(currentUser.getUid());
+            DatabaseReference userContactInfo = userReference.child(DatabaseHelper.SAVEDCARDS_REF);
 
-                if (savedCards != null) {
-                    mSavedCardsStrings = savedCards;
+            userContactInfo.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {
+                    };
+                    ArrayList<String> savedCards = dataSnapshot.getValue(t);
+
+                    mSavedCardsStrings = new ArrayList<>();
+
+                    if (savedCards != null) {
+                        mSavedCardsStrings = savedCards;
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-        userContactInfo.setPriority(null, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+            userContactInfo.setPriority(null, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                if(mDialog != null) {
-                    mDialog.dismiss();
+                    if (mDialog != null) {
+                        mDialog.dismiss();
 
-                    if(getIntent() != null){
-                        if(getIntent().getAction() != null){
+                        if (getIntent() != null) {
+                            if (getIntent().getAction() != null) {
 
-                            if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
-                                mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                                setIntent(getIntent());
-                                readTag(getIntent());
+                                if (getIntent().getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+                                    mDetectedTag = getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                                    setIntent(getIntent());
+                                    readTag(getIntent());
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        Boolean results = activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+        if(!results){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("No Internet Connection");
+            dialog.setMessage("Please check your connection and try again.");
+            dialog.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getData();
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        return results;
     }
 
     // ===================================== EXPANDABLE LIST FRAGMENT INTERFACE CALLBACKS =====================================
 
     @Override
     public void itemClicked(User _user) {
-
         Intent popUpIntent = new Intent(this, PopUpItemActivity.class);
         popUpIntent.putExtra(mUSER_EXTRA, _user);
         startActivityForResult(popUpIntent, mPOPUP_REQUEST_CODE);

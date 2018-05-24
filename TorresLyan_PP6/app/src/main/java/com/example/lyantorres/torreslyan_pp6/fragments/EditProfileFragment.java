@@ -1,7 +1,11 @@
 package com.example.lyantorres.torreslyan_pp6.fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -103,7 +107,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == R.id.save_profile){
+        if(item.getItemId() == R.id.save_profile && isNetworkAvailable()){
 
             EditText nameET = getActivity().findViewById(R.id.edit_name);
             EditText jobTitleET = getActivity().findViewById(R.id.edit_job_title);
@@ -136,6 +140,29 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         }
 
         return true;
+    }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        Boolean results = activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+        if(!results){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("No Internet Connection");
+            dialog.setMessage("Please check your connection and try again.");
+            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        return results;
     }
 
     private void setUpListeners(){
@@ -277,7 +304,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(URLUtil.isHttpsUrl(s.toString())) {
+                if(URLUtil.isHttpsUrl(s.toString()) && s.toString().toLowerCase().contains("youtube.com")) {
                     updateFeedback(largeET, largeFeedback, true);
                 } else {
                     updateFeedback(largeET, largeFeedback, false);

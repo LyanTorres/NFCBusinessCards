@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,7 +96,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         ImageView iv = convertView.findViewById(R.id.list_imageView_card);
 
-
+        //Glide.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).into(iv);
         Picasso.with(mContext).load(mSavedCards.get(groupPosition).getSmallCard()).fit().placeholder(R.drawable.image_placeholder).into(iv);
 
         //Toast.makeText(mContext, "Reading in: " + mSavedCards.get(groupPosition).getSmallCard(), Toast.LENGTH_SHORT).show();

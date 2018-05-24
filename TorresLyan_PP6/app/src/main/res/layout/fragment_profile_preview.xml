@@ -106,7 +106,7 @@
                     android:layout_height="150dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/image_placeholder" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -123,11 +123,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="5dp" />
 
-                <ImageView
-                    android:id="@+id/large_card_IV"
+                <WebView
+                    android:id="@+id/large_card_WV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
