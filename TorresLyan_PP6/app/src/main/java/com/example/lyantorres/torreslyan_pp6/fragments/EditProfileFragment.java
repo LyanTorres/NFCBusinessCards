@@ -82,6 +82,8 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
         if(getActivity() != null && mUser.name != null){
 
+
+            // populating the user's info only if there is any
             EditText nameET = getActivity().findViewById(R.id.edit_name);
             EditText jobTitleET = getActivity().findViewById(R.id.edit_job_title);
             EditText phoneET = getActivity().findViewById(R.id.edit_phone_number);
@@ -117,6 +119,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
             EditText largeET = getActivity().findViewById(R.id.edit_large_card);
 
 
+            // check if they are valid, if not then don't let them save
             if(isValid(nameET) && isValid(jobTitleET) && isValid(phoneET) && isValid(emailET) && isValid(smallET) && isValid(largeET)){
 
                 String name = nameET.getText().toString();
@@ -135,6 +138,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
                 }
             } else {
 
+                // not all of their inputs were valid
                 Toast.makeText(getContext(), "Please make sure all fields are filled out", Toast.LENGTH_SHORT).show();
             }
         }
@@ -144,6 +148,8 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
 
     private boolean isNetworkAvailable() {
+
+        // make sure they have an internet connection
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -165,6 +171,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         return results;
     }
 
+    // these keep track of when the edit texts are typed in to provide live feedback
     private void setUpListeners(){
 
         final EditText nameET = getActivity().findViewById(R.id.edit_name);
@@ -322,6 +329,7 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
 
     private void updateFeedback(EditText _editText, ImageView _imageView, Boolean _isValid){
 
+        // we will use the text color to verify if it's valid or not later so this really matters
         if(_isValid){
             _editText.setTextColor(getResources().getColor(R.color.black));
             _imageView.setVisibility(View.VISIBLE);
@@ -333,12 +341,10 @@ public class EditProfileFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private Boolean isValid(EditText _editText){
 
-        if(_editText.getCurrentTextColor() != getResources().getColor(R.color.red)){
-            return true;
-        }
-        return false;
+    private Boolean isValid(EditText _editText){
+        // if it's red then it's false (not valid)
+        return _editText.getCurrentTextColor() != getResources().getColor(R.color.red);
 
     }
 }

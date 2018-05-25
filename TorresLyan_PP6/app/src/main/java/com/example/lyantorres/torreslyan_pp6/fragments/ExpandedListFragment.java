@@ -5,23 +5,17 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
 import com.example.lyantorres.torreslyan_pp6.Objects.ExpandableListAdapter;
@@ -78,6 +72,7 @@ public class ExpandedListFragment extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if(context instanceof ExpandedListFragmentInterface){
+            // get firebase instance
             mAuth = FirebaseAuth.getInstance();
             mInterface = (ExpandedListFragmentInterface) context;
         }
@@ -99,8 +94,10 @@ public class ExpandedListFragment extends ListFragment {
 
         if (currentUser != null) {
 
+            // make sure they are signed in before doing anything else
             setUpSpinner();
 
+            // getting their saved cards from the internet using the database helper keys
             FirebaseDatabase database = FirebaseDatabase.getInstance();
 
             DatabaseReference userReference = database.getReference(currentUser.getUid());
@@ -110,6 +107,7 @@ public class ExpandedListFragment extends ListFragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    // we saved them as an array list
                     GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
                     ArrayList<String> savedCards = dataSnapshot.getValue(t);
 
@@ -118,6 +116,7 @@ public class ExpandedListFragment extends ListFragment {
                         mSavedCardsUUID = savedCards;
                     }
 
+                    // update the spinner which will sort them alphabetically by default
                     getSavedCardsData();
                     spinnerChanged();
                 }
@@ -136,7 +135,7 @@ public class ExpandedListFragment extends ListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.home_screen_menu, menu);
 
-
+        // setting up the search func
         SearchManager searchManager =
                 (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
@@ -155,11 +154,13 @@ public class ExpandedListFragment extends ListFragment {
             public boolean onQueryTextChange(String newText) {
 
                 if(newText.isEmpty()){
+                    // make sure to update the list we are displaying to the user (this one has all of them )
                     mListToDisplay = mSavedCards;
                     updateUI();
 
                 } else {
 
+                    // only display the ones that meet the search criteria
                     ArrayList<User> filteredCards = new ArrayList<>();
 
                     for(int i = 0; i < mSavedCards.size(); i ++){
@@ -170,6 +171,7 @@ public class ExpandedListFragment extends ListFragment {
                         }
                     }
 
+                    // update list being displayed
                     mListToDisplay = filteredCards;
                     updateUI();
                 }
@@ -192,11 +194,14 @@ public class ExpandedListFragment extends ListFragment {
         return true;
     }
 
+    // this func gets the actual data from the user's contact info and converts them to an ArrayList<User>
     private void getSavedCardsData(){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         for(int i = 0; i < mSavedCardsUUID.size(); i ++){
+
+            // getting database reference
             DatabaseReference userReference = database.getReference(mSavedCardsUUID.get(i));
             DatabaseReference userInfo= userReference.child(DatabaseHelper.CONTACTINFO_REF);
 
@@ -213,8 +218,10 @@ public class ExpandedListFragment extends ListFragment {
                             if (userJson != null) {
                                 User newUser = new User();
                                 newUser.setUUID(mSavedCardsUUID.get(index));
+                                // use our user class to convert the user json to our user object
                                 newUser.readInJson(userJson);
 
+                                // update the array
                                 if(!mSavedCards.contains(newUser)) {
                                     mSavedCards.add(newUser);
                                 }
@@ -243,6 +250,7 @@ public class ExpandedListFragment extends ListFragment {
 
         if (getActivity() != null){
 
+            // set up the expandable list and it's listeners
             ExpandableListAdapter adapter = new ExpandableListAdapter(getContext(), mListToDisplay);
             ExpandableListView lv = getActivity().findViewById(android.R.id.list);
             lv.setAdapter(adapter);
@@ -260,6 +268,7 @@ public class ExpandedListFragment extends ListFragment {
         }
     }
 
+    // this func is to help clear out duplicates that would happen when updating the current user's profile
     private void checkForDuplicatesInSavedCards(){
         for (int i = 0; i < mSavedCards.size(); i ++){
 
@@ -274,6 +283,7 @@ public class ExpandedListFragment extends ListFragment {
         }
     }
 
+    // this updates the list depending on what the user select to sort them by
     private void spinnerChanged(){
         if(mSpinnerItem == 0){
             Collections.sort(mSavedCards, new Comparator<User>() {
@@ -297,6 +307,7 @@ public class ExpandedListFragment extends ListFragment {
         updateUI();
     }
 
+    // make sure the spinner knows who to report to
     private void setUpSpinner(){
 
         if (getActivity()!= null) {

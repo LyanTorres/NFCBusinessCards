@@ -7,7 +7,7 @@ package com.example.lyantorres.torreslyan_pp6.Objects;
 
 public final class DatabaseHelper {
 
-    // REFS
+    // REFS for easy use
     public static final String CONTACTINFO_REF = "contactInfo";
     public static final String SAVEDCARDS_REF = "savedCards";
 

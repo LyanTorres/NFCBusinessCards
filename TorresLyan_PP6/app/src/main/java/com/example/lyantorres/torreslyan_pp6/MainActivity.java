@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SignInFragment.Si
 
             if(getIntent() != null) {
 
-                if(getIntent().getAction() == "SIGNOUT"){
+                if(getIntent().getAction().equals("SIGNOUT")){
                     mAuth.signOut();
                 } else {
 

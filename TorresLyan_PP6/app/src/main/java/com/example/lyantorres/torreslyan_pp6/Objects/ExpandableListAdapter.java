@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -71,10 +70,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if(convertView == null){
 
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_group,null);
         }
 
+        // populate the fields
         TextView firstItem = convertView.findViewById(R.id.list_firstItem_TV);
         TextView secondItem = convertView.findViewById(R.id.list_secondItem_TV);
 
@@ -90,16 +90,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item, null);
         }
 
         final ProgressBar pb = convertView.findViewById(R.id.list_item_progress);
         ImageView iv = convertView.findViewById(R.id.list_imageView_card);
 
+        // to show when it's loading so that they don't freak out
         pb.setIndeterminate(true);
         pb.setVisibility(View.VISIBLE);
 
+
+        // load in the image
         Picasso.with(mContext)
                 .load(mSavedCards.get(groupPosition).getSmallCard())
                 .into(iv, new com.squareup.picasso.Callback() {
@@ -110,12 +113,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
                     @Override
                     public void onError() {
+                        // let them know something went wrong
                         pb.setVisibility(View.GONE);
                         Toast.makeText(mContext, "Something went wrong with "+mSavedCards.get(groupPosition).getName()+"'s Card", Toast.LENGTH_SHORT);
                     }
                 });
-
-        //Toast.makeText(mContext, "Reading in: " + mSavedCards.get(groupPosition).getSmallCard(), Toast.LENGTH_SHORT).show();
 
         return convertView;
     }

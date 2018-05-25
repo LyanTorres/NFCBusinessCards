@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.User;
 import com.example.lyantorres.torreslyan_pp6.R;
@@ -35,10 +32,9 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
     private static User mUser;
     private PopUpFragmentInterface mInterface;
 
-    private VideoView mVideoView;
-    private MediaController mMediacontroller;
-    private ProgressBar mProgressBar;
-    private Boolean mPaused = false;
+    // --Commented out by Inspection (5/24/18, 11:32 PM):private VideoView mVideoView;
+    // --Commented out by Inspection (5/24/18, 11:32 PM):private MediaController mMediacontroller;
+    // --Commented out by Inspection (5/24/18, 11:32 PM):private Boolean mPaused = false;
 
     public PopUpItemFragment() {
         // Required empty public constructor
@@ -76,6 +72,8 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
         if(getActivity() != null){
 
             if(mUser != null){
+
+                // populating the card with the selected user's data
                 TextView nameTv = getActivity().findViewById(R.id.detail_name);
                 TextView jobTv = getActivity().findViewById(R.id.detail_jobtitle);
 
@@ -85,13 +83,14 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
                 ImageButton phone = getActivity().findViewById(R.id.detail_phone);
                 ImageButton email = getActivity().findViewById(R.id.detail_email);
                 Button delete = getActivity().findViewById(R.id.detail_button_delete);
-                mProgressBar = getActivity().findViewById(R.id.popup_progress);
+                ProgressBar mProgressBar = getActivity().findViewById(R.id.popup_progress);
                 mProgressBar.setVisibility(View.GONE);
 
                 phone.setOnClickListener(this);
                 email.setOnClickListener(this);
                 delete.setOnClickListener(this);
 
+                // setting up the webview so that it displays video
                 WebView webView = getActivity().findViewById(R.id.popup_wv);
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.getSettings().setSupportZoom(true);
@@ -108,26 +107,24 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
 
 
                 String videoId = getVideoId();
+                // getting screen dimensions to resize video with
                 DisplayMetrics dm = new DisplayMetrics();
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
+                // have to use this to get specific embeded video data so that the format of the video aligns with android video format
                 String frameVideo = "<iframe width=\""+dm.widthPixels/3.5+"\" height=\"250\" src=\"https://www.youtube.com/embed/"+videoId+"\" frameborder=\"0\" allowfullscreen></iframe>";
                 webView.loadData(frameVideo, "text/html", "utf-8");
 
                 if (Build.VERSION.SDK_INT > 8) {
                     webView.getSettings().setPluginState(WebSettings.PluginState.ON);
                 }
-
-
-                // load in video
-                //setUpVideoViewer();
             }
         }
     }
 
     private String getVideoId(){
+        // youtube videos have a video id that is found after the "=" in general url that is used to share videos with
         String[] string = mUser.getLargeCard().split("=");
-
         return string[string.length-1];
     }
 
@@ -137,10 +134,12 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
 
         if(v.getId() == R.id.detail_phone){
 
+            // open up the phone to make the call
             startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", mUser.getPhoneNumber(), null)));
 
         } else if (v.getId() == R.id.detail_email){
 
+            // open up email with some default values
             final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
             emailIntent.setType("plain/text");
@@ -148,11 +147,11 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
             emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Potential Job Offer");
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Write out your email here!");
 
-
             startActivity(Intent.createChooser(emailIntent, "Send mail"));
 
         } else if(v.getId() == R.id.detail_button_delete){
 
+            // confirm that they want to delete before actually deleting
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Delete this card");
             builder.setMessage("Are you sure you want to delete "+ mUser.getName()+ " forever?");
@@ -160,6 +159,7 @@ public class PopUpItemFragment extends Fragment implements ImageButton.OnClickLi
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if(mInterface != null){
+                        // since they want to delete make sure that the homescreen activity knows which UUID to delete from the database
                         mInterface.deleteWasPressed(mUser.getUUID());
                     }
                 }

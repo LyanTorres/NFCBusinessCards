@@ -61,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfilePreview
             NdefRecord record = NdefRecord.createMime( "text/plain", user.getUid().getBytes());
             NdefMessage message = new NdefMessage(new NdefRecord[] { record });
             if (writeTag(message, detectedTag)) {
-                Toast.makeText(this, "Success: Wrote "+user.getUid()+" to nfc tag", Toast.LENGTH_LONG)
+                Toast.makeText(this, "NFC was successfully written too", Toast.LENGTH_LONG)
                         .show();
             }
         }

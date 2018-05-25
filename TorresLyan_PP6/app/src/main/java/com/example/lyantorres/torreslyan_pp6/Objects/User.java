@@ -7,12 +7,10 @@ package com.example.lyantorres.torreslyan_pp6.Objects;
 
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class User implements Serializable{
 
@@ -27,6 +25,7 @@ public class User implements Serializable{
     public User(){
     }
 
+    // easy way to get a JSON to save to database
     public String getUserJSON(){
 
         JSONObject userJSON = new JSONObject();
@@ -47,6 +46,7 @@ public class User implements Serializable{
         return userJSON.toString();
     }
 
+    // this is so that we have an easy was to convert JSON (way it is stored in database) to our USER object
     public void readInJson(JSONObject _jsonObj){
 
         if(_jsonObj != null){
@@ -69,6 +69,7 @@ public class User implements Serializable{
     }
 
 
+    // this is to set all information as to not have to set them one by one or have a constructor that makes you have all values from the start (which works against us)
     public void setUserInfo( String _name, String _jobTitle, String _phone, String _email, String _smallCard, String _largeCard){
         name = _name;
         jobTitle = _jobTitle;
@@ -78,6 +79,8 @@ public class User implements Serializable{
         largeCard = _largeCard;
     }
 
+
+    // GETTERS AND SETTERS
     public String getName() {
         return name;
     }

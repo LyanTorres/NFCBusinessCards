@@ -17,7 +17,6 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.Objects.DatabaseHelper;
@@ -45,8 +44,8 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     private ProgressDialog mDialog;
 
-    public String mUSER_EXTRA = "USER";
-    public int mPOPUP_REQUEST_CODE = 101;
+    public final String mUSER_EXTRA = "USER";
+    public final int mPOPUP_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,6 +237,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
     private void getData() {
 
 
+        // don't do anything if they aren't connected to the internet
         if (isNetworkAvailable()) {
 
             FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -290,6 +290,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
         }
     }
 
+    // making sure they have a network connectivity and let them know if they dont
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -317,6 +318,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     @Override
     public void itemClicked(User _user) {
+        // open up pop up window
         Intent popUpIntent = new Intent(this, PopUpItemActivity.class);
         popUpIntent.putExtra(mUSER_EXTRA, _user);
         startActivityForResult(popUpIntent, mPOPUP_REQUEST_CODE);
@@ -325,6 +327,7 @@ public class HomeScreenActivity extends AppCompatActivity implements ExpandedLis
 
     @Override
     public void profileClicked() {
+        // take them to profile preview
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivityForResult(intent, 200);
     }
