@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.lyantorres.torreslyan_pp6.R;
 
@@ -76,10 +77,15 @@ public class SignInFragment extends android.support.v4.app.Fragment {
             EditText emailET = getActivity().findViewById(R.id.email_ET);
             EditText passwordET = getActivity().findViewById(R.id.password_ET);
 
-            if(emailET.getText() != null && passwordET.getText() != null){
+            if(emailET.getText().toString() != null && passwordET.getText().toString() != null){
 
-                if(mInterface != null) {
-                    mInterface.signInWasPressed(emailET.getText().toString(), passwordET.getText().toString());
+                if(!emailET.getText().toString().isEmpty() && !passwordET.getText().toString().isEmpty()) {
+
+                    if (mInterface != null) {
+                        mInterface.signInWasPressed(emailET.getText().toString(), passwordET.getText().toString());
+                    }
+                } else {
+                    Toast.makeText(getContext(), "One or more of the required fields are empty", Toast.LENGTH_SHORT).show();
                 }
             }
         }
