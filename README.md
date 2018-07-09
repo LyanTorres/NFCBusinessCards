@@ -1,22 +1,23 @@
-### TorresLyan_Portfolio6 
 
-# FINAL SUBMISSION
+# NFC Business Cards
+> Tired of losing, ruining, or just having to many business cards in your wallet? Well, we're here to try and upadte the old fad that is paper business cards by using NFC chips. It kind of works just like your contacts on your phone but a bit more professional. A way to separate business and personal matters. 
 
-## Requirements to succesfully run this app:
+## Prerequisites
 
-1. Must run APK on a physical device in order to test NFC reading/ writing
-2. Hardware considerations/ requirements: Device must support NFC reading/ writing
-3. You are free to create your own account, you can leave "contact information" in the profile view empty or fill it out. It will still write the user's UID on to an NFC
+You have to use this application while on a physical device, since emulators don't have the capabilities of reading/writing to NFC chips. 
+You would laso need an NFC chipto read/write to.
+
+## Author
+
+* Lyan Torres Labiosa
+
+## Premade accounts:
+> In case you don't have an NFC to test it with, you can at least see information that has been scanned in previously.
+
 Accounts you can use to sign in: 
 EMAIL: full@sail.com  
 PW: 123456
 EMAIL: demo@live.com
 PW 123456
-4. List of known bugs:
-- Only load very specifc image urls for example: google search for an image and right clikc to open image link and use that one to display
-- some videos from youtube are copyrighted so they won't play but that's not something I can fix atm
-- just found this at 12:30, if you hit buttons multiple times while waiting for something to happen it will open two activities but won't crash app, from what i know. 
-5. Additional information:
-- I've monkey tested it as much as I can so if you find a way to crash it I will be mildly impressed/ very SAD :'(((   (redacted due to double activity statement but still valid I guess)
-- I've left some NFC with Hoyt who said will leave them on your desk, they are named with who's info they have saved in them and an empty one so you can write to it to. You can overwrite cards without crashing but just in case.
+
 
